@@ -1,20 +1,12 @@
 # Build stage
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
-WORKDIR /src
-
-# Copia apenas o arquivo de projeto e restaura dependências
-COPY ["api/api.csproj", "api/"]
-RUN dotnet restore "api/api.csproj"
-
-# Copia o resto do código
+WORKDIR /app
 COPY . .
-WORKDIR "/src/api"
-RUN dotnet publish -c Release -o /app/publish
+RUN dotnet publish -c Release -o out
 
 # Runtime stage
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
+FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /app
-COPY --from=build /app/publish .
+COPY --from=build /app/out .
 ENV ASPNETCORE_URLS=http://+:80
-EXPOSE 80
 ENTRYPOINT ["dotnet", "api.dll"]
