@@ -1,0 +1,9 @@
+Host: ep-autumn-water-aeb0cnn0-pooler.c-2.us-east-2.aws.neon.tech
+Porta: 5432 (padrão do PostgreSQL, caso a string não indique outra)
+Database: CASNatal
+Username: neondb_owner
+Password: npg_EB1wjmSdACH2
+
+psql 'postgresql://neondb_owner:npg_EB1wjmSdACH2@ep-autumn-water-aeb0cnn0-pooler.c-2.us-east-2.aws.neon.tech/CASNatal?sslmode=require&channel_binding=require'
+
+"DefaultConnection": "Host=ep-autumn-water-aeb0cnn0-pooler.c-2.us-east-2.aws.neon.tech;Port=5432;Database=CASNatal;Username=neondb_owner;Password=npg_EB1wjmSdACH2;SSL Mode=Require;Trust Server Certificate=true"
