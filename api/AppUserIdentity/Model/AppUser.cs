@@ -1,0 +1,17 @@
+﻿using api.Courses;
+using api.Enrollments;
+using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
+
+namespace api.AppUserIdentity.Model
+{
+    public class AppUser : IdentityUser
+    {
+        public int PrivateId { get; set; }
+        public byte[]? Avatar { get; set; } = Array.Empty<byte>();
+        public string PrivateRole { get; set; } = string.Empty;
+        public ICollection<Course> Courses { get; set; } = new List<Course>();
+        public ICollection<Enrollment> Enrollments { get; set; } = new List<Enrollment>();
+
+    }
+}

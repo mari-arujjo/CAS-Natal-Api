@@ -1,9 +1,9 @@
-﻿using api.Lesson;
+﻿using api.Lessons;
 using System.ComponentModel.DataAnnotations;
 
-namespace api.Glossary
+namespace api.Glossaries
 {
-    public class GlossaryModel
+    public class Glossary
     {
         [Key]
         public int Id { get; set; }

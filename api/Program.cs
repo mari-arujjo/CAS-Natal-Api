@@ -14,7 +14,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 });
 
 // Configura o Identity
-builder.Services.AddIdentity<AppUserModel, IdentityRole>(options =>
+builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
 {
     options.Password.RequireDigit = false; // numeros obrigatorios na senha
     options.Password.RequireLowercase = false; // letras minusculas obrigatorias na senha

@@ -1,17 +1,20 @@
-﻿using api.Glossary;
+﻿using api.Courses;
+using api.Glossaries;
 using System.ComponentModel.DataAnnotations;
 
-namespace api.Lesson
+namespace api.Lessons
 {
-    public class LessonModel
+    public class Lesson
     {
         [Key]
         public int Id { get; set; }
         public string Name { get; set; } = string.Empty;
-        public string Status { get; set; } = string.Empty;
+        public bool Completed { get; set; } = false;
         public string Url { get; set; } = string.Empty;
         public string Content { get; set; } = string.Empty;
+        public ICollection<Glossary> Glossaries { get; set; } = new List<Glossary>();
+
         public int CourseId { get; set; }
-        public List<GlossaryModel> Glossaries { get; set; } = new();
+        public Course Course { get; set; } //navigation propriety
     }
 }
