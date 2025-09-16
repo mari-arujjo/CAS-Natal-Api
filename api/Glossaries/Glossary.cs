@@ -12,5 +12,7 @@ namespace api.Glossaries
         public string Url { get; set; } = string.Empty;
         public byte[]? Photo { get; set; } = Array.Empty<byte>();
         public string Category { get; set; } = string.Empty;
+
+        public ICollection<Lesson> Lessons { get; set; } = new List<Lesson>();
     }
 }

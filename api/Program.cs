@@ -1,5 +1,6 @@
 using api;
 using api.AppUserIdentity.Model;
+using api.Courses.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -48,7 +49,7 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-
+builder.Services.AddScoped<ICourseRepository, CourseRepository>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
