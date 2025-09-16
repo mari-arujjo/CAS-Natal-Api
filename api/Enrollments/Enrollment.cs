@@ -1,4 +1,4 @@
-﻿using api.AppUserIdentity.Model;
+﻿using api.AppUserIdentity;
 using api.Courses;
 using api.Lessons;
 using System.ComponentModel.DataAnnotations;
@@ -10,7 +10,7 @@ namespace api.Enrollments
         [Key]
         public int Id { get; set; }
         ///
-        public string CourseId { get; set; } = string.Empty;
+        public int CourseId { get; set; }
         public Course Course { get; set; }
         ///
         public string UserId { get; set; } = string.Empty;

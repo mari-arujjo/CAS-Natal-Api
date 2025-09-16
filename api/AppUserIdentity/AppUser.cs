@@ -3,7 +3,7 @@ using api.Enrollments;
 using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations;
 
-namespace api.AppUserIdentity.Model
+namespace api.AppUserIdentity
 {
     public class AppUser : IdentityUser
     {

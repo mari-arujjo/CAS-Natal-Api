@@ -1,5 +1,5 @@
 using api;
-using api.AppUserIdentity.Model;
+using api.AppUserIdentity;
 using api.Courses.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;

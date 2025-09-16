@@ -2,11 +2,11 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using System.Data.SqlTypes;
 using Microsoft.AspNetCore.Identity;
-using api.AppUserIdentity.Model;
 using api.Courses;
 using api.Lessons;
 using api.Glossaries;
 using api.Enrollments;
+using api.AppUserIdentity;
 
 namespace api
 {
