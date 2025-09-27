@@ -2,7 +2,7 @@
 
 namespace api.AppUserIdentity
 {
-    public class NewUserDto // DTO de retorno de user criado
+    public class NewUserDto
     {
         public string name { get; set; }
         public string username { get; set; }

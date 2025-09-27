@@ -2,7 +2,7 @@
 
 namespace api.AppUserIdentity
 {
-    public class RegisterUserDto //DTO para criar o user
+    public class RegisterUserDto
     {
         [Required]
         public string name { get; set; }
