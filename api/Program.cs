@@ -7,25 +7,32 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
-var builder = WebApplication.CreateBuilder(args);
 
-// Configura o DbContext para PostgreSQL
+var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddAuthorization();
+builder.Services.AddControllers();
+builder.Services.AddScoped<ICourseRepository, CourseRepository>();
+builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+// POSTGRESQL CONECTION
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
 {
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
-// Configura o Identity
+// IDENTITY SETTINGS
 builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
 {
-    options.Password.RequireDigit = false; // numeros obrigatorios na senha
-    options.Password.RequireLowercase = false; // letras minusculas obrigatorias na senha
-    options.Password.RequireUppercase = false; // letras maiusculas obrigatorias na senha
-    options.Password.RequireNonAlphanumeric = false; // caracteres especiais obrigatorios na senha
-    options.Password.RequiredLength = 5; // tamanho minimo da senha
+    options.Password.RequireDigit = false;
+    options.Password.RequireLowercase = false;
+    options.Password.RequireUppercase = false;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequiredLength = 5;
 }).AddEntityFrameworkStores<ApplicationDbContext>();
 
-//Configura o JWT
+// JWT SETTINGS
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme =
@@ -37,37 +44,27 @@ builder.Services.AddAuthentication(options =>
 }).AddJwtBearer(options => {
     options.TokenValidationParameters = new TokenValidationParameters
     {
-        ValidateIssuer = true, // valida a chave de assinatura do token 
-        ValidIssuer = builder.Configuration["JWT:Issuer"], // emissor do token
-        ValidateAudience = true, // valida o publico do token
-        ValidAudience = builder.Configuration["JWT:Audience"], // audiencia do token
-        ValidateIssuerSigningKey = true, // valida a chave de assinatura do token
+        ValidateIssuer = true, 
+        ValidIssuer = builder.Configuration["JWT:Issuer"],
+        ValidateAudience = true,
+        ValidAudience = builder.Configuration["JWT:Audience"],
+        ValidateIssuerSigningKey = true,
         IssuerSigningKey = new SymmetricSecurityKey(
             System.Text.Encoding.UTF8.GetBytes(
-                builder.Configuration["JWT:SigningKey"] // chave de assinatura do token
+                builder.Configuration["JWT:SigningKey"]
             )
         )
     };
 });
 
-builder.Services.AddAuthorization();
-builder.Services.AddControllers(); //chama controllers
-builder.Services.AddScoped<ICourseRepository, CourseRepository>();
-builder.Services.AddScoped<ITokenService, TokenService>();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
 var app = builder.Build();
-
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
 app.UseHttpsRedirection();
-app.UseAuthentication(); // Habilita a autenticação
-app.UseAuthorization(); // Habilita a autorização
-app.MapControllers(); // Habilita chamada dos controllers
-
+app.MapControllers();
+app.UseAuthentication();
+app.UseAuthorization();
 app.Run();

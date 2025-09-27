@@ -28,7 +28,6 @@ namespace api
             // configura a prorpiedade PrivateId como autoincrementada no bd
             builder.Entity<AppUser>().Property(u => u.PrivateId).ValueGeneratedOnAdd();
 
-            // definição dos dois tipos de roles no sistema
             List<IdentityRole> roles = new List<IdentityRole> {
                 new IdentityRole{
                     Name = "Admin",
