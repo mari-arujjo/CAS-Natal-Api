@@ -1,0 +1,25 @@
+# Pastas de build
+bin/
+obj/
+
+# Pastas do Visual Studio
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Cache e arquivos temporários
+*.cache/
+*.log
+*.pdb
+*.tmp
+*.dbmdl
+
+# Pastas do JetBrains Rider / VS Code
+.idea/
+.vscode/
+
+# Arquivos do sistema
+Thumbs.db
+Desktop.ini
