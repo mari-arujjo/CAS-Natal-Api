@@ -1,7 +1,7 @@
 using api;
 using api.AppUserIdentity;
+using api.AppUserIdentity.Service;
 using api.Courses.Repository;
-using api.Service;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
