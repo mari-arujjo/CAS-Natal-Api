@@ -1,7 +1,8 @@
 ﻿using System.Runtime.Intrinsics.X86;
 using System;
+using api.Courses.Dtos;
 
-namespace api.Courses.Dtos
+namespace api.Courses
 {
     // Nessa classe, iremos criar um método de extensão.
     // Permite adicionar um novo método a uma classe existente sem precisar modificar essa classe diretamente ou criar uma subclasse.
@@ -19,15 +20,13 @@ namespace api.Courses.Dtos
             };
         }
 
-        public static Course CreateNewCourseDto(this CourseDto c)
+        public static Course CreateNewCourseDto(this CreateCourseDto c)
         {
             return new Course
             {
-                Id = c.Id,
                 Name = c.Name,
                 Abbreviation = c.Abbreviation,
-                Description = c.Description,
-                Photo = c.Photo
+                Description = c.Description
             };
         }
 

@@ -1,4 +1,6 @@
 ﻿
+using Microsoft.EntityFrameworkCore;
+
 namespace api.Courses.Repository
 {
     public class CourseRepository : ICourseRepository
@@ -9,9 +11,11 @@ namespace api.Courses.Repository
             _context = context;
         }
 
-        public Task<Course> CreateAsync(Course course)
+        public async Task<Course> CreateAsync(Course course)
         {
-            throw new NotImplementedException();
+            await _context.Courses.AddAsync(course);
+            await _context.SaveChangesAsync();
+            return course;
         }
 
         public Task<Course> DeleteAsync(int id)
@@ -19,14 +23,14 @@ namespace api.Courses.Repository
             throw new NotImplementedException();
         }
 
-        public Task<List<Course>> GetAllAsync()
+        public async Task<List<Course>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return await _context.Courses.ToListAsync();
         }
 
-        public Task<Course> GetByIdAsync(int id)
+        public async Task<Course> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _context.Courses.FindAsync(id);
         }
 
         public Task<Course> UpdateAsync(int id)
