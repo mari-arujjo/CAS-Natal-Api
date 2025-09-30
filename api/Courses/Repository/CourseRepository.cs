@@ -1,4 +1,5 @@
 ﻿
+using api.Courses.Dtos;
 using Microsoft.EntityFrameworkCore;
 
 namespace api.Courses.Repository
@@ -18,9 +19,13 @@ namespace api.Courses.Repository
             return course;
         }
 
-        public Task<Course> DeleteAsync(int id)
+        public async Task<Course> DeleteAsync(int id)
         {
-            throw new NotImplementedException();
+            var course = await _context.Courses.FirstOrDefaultAsync(c => c.Id == id);
+            if (course == null) return null;
+            _context.Courses.Remove(course);
+            await _context.SaveChangesAsync();
+            return course;
         }
 
         public async Task<List<Course>> GetAllAsync()
@@ -33,9 +38,17 @@ namespace api.Courses.Repository
             return await _context.Courses.FindAsync(id);
         }
 
-        public Task<Course> UpdateAsync(int id)
+        public async Task<Course> UpdateAsync(int id, UpdateCourseDto dto)
         {
-            throw new NotImplementedException();
+            var course = await _context.Courses.FirstOrDefaultAsync(c => c.Id == id);
+            if (course == null) return null;
+
+            course.Name = dto.Name;
+            course.Abbreviation = dto.Abbreviation;
+            course.Description = dto.Description;
+            course.Photo = dto.Photo;
+            await _context.SaveChangesAsync();
+            return course;
         }
     }
 }

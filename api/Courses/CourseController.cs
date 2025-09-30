@@ -33,7 +33,7 @@ namespace api.Courses
             return Ok(course.ConvertToCourseDto());
         }
 
-        [HttpPost("create")]
+        [HttpPost("postCourse")]
         public async Task<IActionResult> NewCourse([FromBody] CreateCourseDto dto)
         {
             var course = dto.CreateNewCourseDto();
@@ -47,5 +47,22 @@ namespace api.Courses
                 course.ConvertToCourseDto()
             );
         }
+
+        [HttpPut("putCourse/{id}")]
+        public async Task<IActionResult> UpdatePutCourse([FromRoute] int id, [FromBody] UpdateCourseDto dto)
+        {
+            var course = await _courseRep.UpdateAsync(id, dto);
+            if (course == null) return NotFound();
+            return Ok(course.ConvertToCourseDto());
+        }
+
+        [HttpDelete("deleteCourse/{id}")]
+        public async Task<IActionResult> DeleteCourse([FromRoute] int id)
+        {
+            var course = await _courseRep.DeleteAsync(id);
+            if (course == null) return NotFound();
+            return NoContent();
+        }
+
     }
 }
