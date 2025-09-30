@@ -12,8 +12,8 @@ using api;
 namespace api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250926121416_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20250930141203_CriacaoTabelasIniciais")]
+    partial class CriacaoTabelasIniciais
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -68,13 +68,13 @@ namespace api.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "b4f965fa-b304-4ef7-af28-db295ab2a3b1",
+                            Id = "6ffb4c09-b831-496b-a87b-d8bc5fe778d1",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "c32b8a07-f8f3-4665-8981-b3a038647eef",
+                            Id = "8ceeaeb3-addc-42f5-bb56-6793fad10330",
                             Name = "Default",
                             NormalizedName = "DEFAULT"
                         });
@@ -279,9 +279,6 @@ namespace api.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("AppUserId")
-                        .HasColumnType("text");
-
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("text");
@@ -294,8 +291,6 @@ namespace api.Migrations
                         .HasColumnType("bytea");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AppUserId");
 
                     b.ToTable("Courses");
                 });
@@ -465,13 +460,6 @@ namespace api.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("api.Courses.Course", b =>
-                {
-                    b.HasOne("api.AppUserIdentity.AppUser", null)
-                        .WithMany("Courses")
-                        .HasForeignKey("AppUserId");
-                });
-
             modelBuilder.Entity("api.Enrollments.Enrollment", b =>
                 {
                     b.HasOne("api.Courses.Course", "Course")
@@ -504,8 +492,6 @@ namespace api.Migrations
 
             modelBuilder.Entity("api.AppUserIdentity.AppUser", b =>
                 {
-                    b.Navigation("Courses");
-
                     b.Navigation("Enrollments");
                 });
 

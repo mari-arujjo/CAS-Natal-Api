@@ -11,7 +11,6 @@ namespace api.AppUserIdentity
         public string FullName { get; set; } = string.Empty;
         public byte[]? Avatar { get; set; } = Array.Empty<byte>();
         public string PrivateRole { get; set; } = string.Empty;
-        public ICollection<Course> Courses { get; set; } = new List<Course>();
         public ICollection<Enrollment> Enrollments { get; set; } = new List<Enrollment>();
 
     }
