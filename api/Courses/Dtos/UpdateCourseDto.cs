@@ -5,7 +5,7 @@ namespace api.Courses.Dtos
     public class UpdateCourseDto
     {
         [MinLength(10, ErrorMessage = "O nome deve ter no mínimo 10 caracteres.")]
-        [MaxLength(30, ErrorMessage = "Limite de caracteres: 30")]
+        [MaxLength(50, ErrorMessage = "Limite de caracteres: 50")]
         public string Name { get; set; }
 
         [MinLength(2, ErrorMessage = "A sigla deve ter no mínimo 2 caracteres.")]
@@ -16,6 +16,6 @@ namespace api.Courses.Dtos
         [MaxLength(300, ErrorMessage = "Limite de caracteres: 300")]
         public string Description { get; set; }
 
-        public byte[]? Photo { get; set; }
+        //public byte[]? Photo { get; set; }
     }
 }

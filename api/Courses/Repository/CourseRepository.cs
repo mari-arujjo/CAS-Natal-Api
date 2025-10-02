@@ -46,7 +46,7 @@ namespace api.Courses.Repository
             course.Name = dto.Name;
             course.Abbreviation = dto.Abbreviation;
             course.Description = dto.Description;
-            course.Photo = dto.Photo;
+            //course.Photo = dto.Photo;
             await _context.SaveChangesAsync();
             return course;
         }

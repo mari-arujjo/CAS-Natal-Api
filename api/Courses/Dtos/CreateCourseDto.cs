@@ -6,7 +6,7 @@ namespace api.Courses.Dtos
     {
         [Required]
         [MinLength(10, ErrorMessage = "O nome deve ter no mínimo 10 caracteres.")]
-        [MaxLength(30, ErrorMessage = "Limite de caracteres: 30")]
+        [MaxLength(50, ErrorMessage = "Limite de caracteres: 50")]
         public string Name { get; set; } = string.Empty;
 
         [Required]
