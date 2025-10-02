@@ -6,7 +6,7 @@ namespace api.Lessons.Repository
     {
         Task<List<Lesson>> GetAllAsync();
         Task<Lesson> GetByIdAsync(int id);
-        Task<Lesson> CreateAsync(Lesson course);
+        Task<Lesson> CreateAsync(Lesson lesson);
         Task<Lesson> DeleteAsync(int id);
         Task<Lesson> UpdateAsync(int id, UpdateLessonDto dto);
     }

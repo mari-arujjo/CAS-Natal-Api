@@ -13,10 +13,19 @@ namespace api.Lessons
                 Completed = lesson.Completed,
                 Url = lesson.Url,
                 Content = lesson.Content
-
             };
         }
 
+        public static Lesson CreateNewLessonDto(this CreateLessonDto dto)
+        {
+            return new Lesson 
+            {
+                Name = dto.Name,
+                Completed = dto.Completed,
+                Url = dto.Url,
+                Content = dto.Content,
+            };
+        }
 
     }
 }

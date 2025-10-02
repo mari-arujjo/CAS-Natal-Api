@@ -1,8 +1,10 @@
 ﻿using api.Lessons;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace api.Glossaries
 {
+    [Table("Glossaries")]
     public class Glossary
     {
         [Key]

@@ -1,9 +1,11 @@
 ﻿using api.Courses;
 using api.Glossaries;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace api.Lessons
 {
+    [Table("Lessons")]
     public class Lesson
     {
         [Key]

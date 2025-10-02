@@ -11,30 +11,43 @@ namespace api.Lessons.Repository
             _context = context;
         }
 
-        public async Task<Lesson> CreateAsync(Lesson course)
+        public async Task<Lesson> CreateAsync(Lesson lesson)
         {
-            throw new NotImplementedException();
+            await _context.Lessons.AddAsync(lesson);
+            await _context.SaveChangesAsync();
+            return lesson;
         }
 
         public async Task<Lesson> DeleteAsync(int id)
         {
-            throw new NotImplementedException();
+            var lesson = await _context.Lessons.FirstOrDefaultAsync(l => l.Id == id);
+            if (lesson == null) return null;
+            _context.Lessons.Remove(lesson);
+            await _context.SaveChangesAsync();
+            return lesson;
         }
 
         public async Task<List<Lesson>> GetAllAsync()
         {
-            var lesson = await _context.Lessons.ToListAsync();
-            return lesson;
+            return await _context.Lessons.ToListAsync();
         }
 
         public async Task<Lesson> GetByIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return await _context.Lessons.FindAsync(id);
         }
 
         public async Task<Lesson> UpdateAsync(int id, UpdateLessonDto dto)
         {
-            throw new NotImplementedException();
+            var lesson = await _context.Lessons.FirstOrDefaultAsync(l => l.Id == id);
+            if (lesson == null) return null;
+
+            lesson.Name = dto.Name;
+            lesson.Completed = dto.Completed;
+            lesson.Url = dto.Url;
+            lesson.Content = dto.Content;
+            await _context.SaveChangesAsync();
+            return lesson;
         }
     }
 }

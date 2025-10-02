@@ -30,7 +30,7 @@ namespace api
             }
         }
 
-        [HttpGet("maxconnections")]
+        [HttpGet("maxConnections")]
         public IActionResult GetMaxConnections()
         {
             try
@@ -51,7 +51,7 @@ namespace api
             }
         }
 
-        [HttpGet("activeconnections")]
+        [HttpGet("activeConnections")]
         public IActionResult GetActiveConnections()
         {
             try
