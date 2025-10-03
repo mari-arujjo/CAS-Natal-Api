@@ -1,6 +1,6 @@
 ﻿using api.AppUserIdentity;
 
-namespace api.AppUserIdentity.Service
+namespace api.Service
 {
     public interface ITokenService
     {

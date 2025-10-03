@@ -6,7 +6,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace api.AppUserIdentity
 {
-    [Table("Enrollments")]
     public class AppUser : IdentityUser
     {
         public int PrivateId { get; set; }

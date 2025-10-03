@@ -19,13 +19,20 @@ namespace api
         public DbSet<Lesson> Lessons { get; set; }
         public DbSet<Glossary> Glossaries { get; set; }
 
-
-        // método do EF Core que permite personalizar o modelo do banco de dados.
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
 
-            // configura a prorpiedade PrivateId como autoincrementada no bd
+            builder.Entity<Enrollment>(x => x.HasKey(p => new {p.UserId, p.CourseId}));
+            builder.Entity<Enrollment>()
+                .HasOne(u => u.User)
+                .WithMany(u => u.Enrollments)
+                .HasForeignKey(p => p.UserId);
+            builder.Entity<Enrollment>()
+                .HasOne(u => u.Course)
+                .WithMany(u => u.Enrollments)
+                .HasForeignKey(p => p.CourseId);
+
             builder.Entity<AppUser>().Property(u => u.PrivateId).ValueGeneratedOnAdd();
 
             List<IdentityRole> roles = new List<IdentityRole> {
