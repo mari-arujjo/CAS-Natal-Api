@@ -15,8 +15,8 @@ namespace api.Courses
         public string Description { get; set; } = string.Empty;
         public byte[]? Photo { get; set; } = Array.Empty<byte>();
 
-        public ICollection<Lesson> Lessons { get; set; } = new List<Lesson>();
-        public ICollection<Enrollment> Enrollments { get; set; } = new List<Enrollment>();
+        public List<Lesson> Lessons { get; set; } = new List<Lesson>();
+        public List<Enrollment> Enrollments { get; set; } = new List<Enrollment>();
 
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Runtime.Intrinsics.X86;
 using System;
 using api.Courses.Dtos;
+using api.Lessons;
 
 namespace api.Courses
 {
@@ -16,7 +17,8 @@ namespace api.Courses
                 Name = c.Name,
                 Abbreviation = c.Abbreviation,
                 Description = c.Description,
-                Photo = c.Photo
+                Photo = c.Photo,
+                Lessons = c.Lessons.Select(l => l.ConvertToLessonDto()).ToList()
             };
         }
 

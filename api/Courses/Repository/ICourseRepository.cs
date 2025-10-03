@@ -9,6 +9,7 @@ namespace api.Courses.Repository
         Task<Course> CreateAsync(Course course);
         Task<Course> DeleteAsync(int id);
         Task<Course> UpdateAsync(int id, UpdateCourseDto dto);
+        Task<bool> CourseExists(int id);
 
     }
 }

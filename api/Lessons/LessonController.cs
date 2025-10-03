@@ -1,4 +1,5 @@
-﻿using api.Lessons.Dtos;
+﻿using api.Courses.Repository;
+using api.Lessons.Dtos;
 using api.Lessons.Repository;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
@@ -10,9 +11,11 @@ namespace api.Lessons
     public class LessonController : ControllerBase
     {
         private readonly ILessonRepository _lessonRep;
-        public LessonController(ILessonRepository lessonRep)
+        private readonly ICourseRepository _courseRep;
+        public LessonController(ILessonRepository lessonRep, ICourseRepository courseRep)
         {
             _lessonRep = lessonRep;
+            _courseRep = courseRep;
         }
 
         [HttpGet("getAll")]
@@ -29,20 +32,21 @@ namespace api.Lessons
         {
             var lessons = await _lessonRep.GetByIdAsync(id);
             if (lessons == null) return NotFound();
-            return Ok(lessons.ConvertToLessonDto());
+            return Ok(lessons.ConvertToLessonDto()); 
         }
 
-        [HttpPost("postLesson")]
-        public async Task<IActionResult> NewLesson([FromBody] CreateLessonDto dto)
+        [HttpPost("postLesson/{courseId}")]
+        public async Task<IActionResult> NewLesson([FromRoute] int courseId, [FromBody] CreateLessonDto dto)
         {
-            var lesson = dto.CreateNewLessonDto();
+            if (!await _courseRep.CourseExists(courseId)) return BadRequest("Course does not exist.");
+            var lesson = dto.CreateNewLessonDto(courseId);
             await _lessonRep.CreateAsync(lesson);
             return CreatedAtAction
             (
                 nameof(GetById),
                 new
                 {
-                    id = lesson.Id,
+                    id = lesson.Id, 
                 },
                 lesson.ConvertToLessonDto()
             );

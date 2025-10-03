@@ -12,6 +12,11 @@ namespace api.Courses.Repository
             _context = context;
         }
 
+        public Task<bool> CourseExists(int id)
+        {
+            return _context.Courses.AnyAsync(c => c.Id == id);
+        }
+
         public async Task<Course> CreateAsync(Course course)
         {
             await _context.Courses.AddAsync(course);
@@ -30,12 +35,12 @@ namespace api.Courses.Repository
 
         public async Task<List<Course>> GetAllAsync()
         {
-            return await _context.Courses.ToListAsync();
+            return await _context.Courses.Include(l => l.Lessons).ToListAsync();
         }
 
         public async Task<Course> GetByIdAsync(int id)
         {
-            return await _context.Courses.FindAsync(id);
+            return await _context.Courses.Include(l => l.Lessons).FirstOrDefaultAsync(c => c.Id == id);
         }
 
         public async Task<Course> UpdateAsync(int id, UpdateCourseDto dto)

@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,6 +19,12 @@ builder.Services.AddScoped<ILessonRepository, LessonRepository>();
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+
+builder.Services.AddControllers().AddNewtonsoftJson(options =>
+{
+    options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+});
 
 // POSTGRESQL CONECTION
 builder.Services.AddDbContext<ApplicationDbContext>(options =>

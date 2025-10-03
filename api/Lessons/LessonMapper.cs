@@ -12,11 +12,13 @@ namespace api.Lessons
                 Name = lesson.Name,
                 Completed = lesson.Completed,
                 Url = lesson.Url,
-                Content = lesson.Content
+                Content = lesson.Content,
+                CourseId = lesson.CourseId,
+                
             };
         }
 
-        public static Lesson CreateNewLessonDto(this CreateLessonDto dto)
+        public static Lesson CreateNewLessonDto(this CreateLessonDto dto, int courseId)
         {
             return new Lesson 
             {
@@ -24,6 +26,7 @@ namespace api.Lessons
                 Completed = dto.Completed,
                 Url = dto.Url,
                 Content = dto.Content,
+                CourseId = courseId
             };
         }
 
