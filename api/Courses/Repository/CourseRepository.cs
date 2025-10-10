@@ -12,7 +12,7 @@ namespace api.Courses.Repository
             _context = context;
         }
 
-        public Task<bool> CourseExists(int id)
+        public Task<bool> CourseExists(Guid id)
         {
             return _context.Courses.AnyAsync(c => c.Id == id);
         }
@@ -24,7 +24,7 @@ namespace api.Courses.Repository
             return course;
         }
 
-        public async Task<Course> DeleteAsync(int id)
+        public async Task<Course> DeleteAsync(Guid id)
         {
             var course = await _context.Courses.FirstOrDefaultAsync(c => c.Id == id);
             if (course == null) return null;
@@ -38,18 +38,23 @@ namespace api.Courses.Repository
             return await _context.Courses.Include(l => l.Lessons).ToListAsync();
         }
 
-        public async Task<Course> GetByIdAsync(int id)
+        public async Task<Course?> GetBySymbol(string abbreviation)
+        {
+            return await _context.Courses.FirstOrDefaultAsync(a => a.Symbol == abbreviation);
+        }
+
+        public async Task<Course?> GetByIdAsync(Guid id)
         {
             return await _context.Courses.Include(l => l.Lessons).FirstOrDefaultAsync(c => c.Id == id);
         }
 
-        public async Task<Course> UpdateAsync(int id, UpdateCourseDto dto)
+        public async Task<Course> UpdateAsync(Guid id, UpdateCourseDto dto)
         {
             var course = await _context.Courses.FirstOrDefaultAsync(c => c.Id == id);
             if (course == null) return null;
 
             course.Name = dto.Name;
-            course.Abbreviation = dto.Abbreviation;
+            course.Symbol = dto.Symbol;
             course.Description = dto.Description;
             //course.Photo = dto.Photo;
             await _context.SaveChangesAsync();

@@ -15,7 +15,7 @@ namespace api.Courses
             {
                 Id = c.Id,
                 Name = c.Name,
-                Abbreviation = c.Abbreviation,
+                Symbol = c.Symbol,
                 Description = c.Description,
                 Photo = c.Photo,
                 Lessons = c.Lessons.Select(l => l.ConvertToLessonDto()).ToList()
@@ -27,7 +27,7 @@ namespace api.Courses
             return new Course
             {
                 Name = c.Name,
-                Abbreviation = c.Abbreviation,
+                Symbol = c.Symbol,
                 Description = c.Description
             };
         }

@@ -43,5 +43,30 @@ namespace api.Enrollments
             var userEnrollment = await _enrollmentRep.GetUserEnrollment(appUser);
             return Ok(userEnrollment);
         }
+
+        [HttpPost("postEnrollment")]
+        [Authorize]
+        public async Task<IActionResult> NewEnrollment(string abbreviation)
+        {
+            var username = User.GetUsername();
+            var appUser = await _userMan.FindByNameAsync(username);
+            var course = await _courseRep.GetBySymbol(abbreviation);
+            if (course == null) return BadRequest("Course not found.");
+
+            var userEnrollment = await _enrollmentRep.GetUserEnrollment(appUser);
+            if (userEnrollment.Any(e => e.Symbol.ToLower() == abbreviation.ToLower())) return BadRequest("User already enrolled in this course.");
+            var enrollment = new Enrollment
+            {
+                CourseId = course.Id,
+                UserId = appUser.Id,
+                Date = DateTime.UtcNow,
+                Status = EnrollmentStatus.Active,
+                ProgressPercentage = 0
+            };
+            await _enrollmentRep.CreateEnrollment(enrollment);
+            if (enrollment == null) return BadRequest("Enrollment could not be created.");
+            return Created();
+        }
+
     }
 }

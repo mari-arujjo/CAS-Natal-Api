@@ -12,7 +12,7 @@ namespace api.Courses.Dtos
         [Required]
         [MinLength(2, ErrorMessage = "A sigla deve ter no mínimo 2 caracteres.")]
         [MaxLength(4, ErrorMessage = "Limite de caracteres: 4")]
-        public string Abbreviation { get; set; } = string.Empty;
+        public string Symbol { get; set; } = string.Empty;
 
         [Required]
         [MinLength(10, ErrorMessage = "A descrição deve ter no mínimo 10 caracteres.")]

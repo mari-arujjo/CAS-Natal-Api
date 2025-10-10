@@ -10,18 +10,24 @@ namespace api.Enrollments
     public class Enrollment
     {
         [Key]
-        public int Id { get; set; }
-        ///
-        public int CourseId { get; set; }
+        public Guid Id { get; set; } = Guid.NewGuid();
+        public string EnrollmentCode { get; set; } = string.Empty; //HCN-2025-hash do guid
+        public DateTime Date { get; set; } = DateTime.UtcNow;
+        public EnrollmentStatus Status { get; set; } = EnrollmentStatus.Active;
+        public int ProgressPercentage { get; set; } = 0;
+        ////////////////////////////////////////////////////
+        public Guid CourseId { get; set; }
         public Course Course { get; set; }
-        ///
         public string UserId { get; set; } = string.Empty;
         public AppUser User { get; set; }
-        ///
-        public DateTime Date { get; set; }
-        public string Status { get; set; } = "Active"; //active, inactive
-        public int ProgressPercentage { get; set; } = 0;
 
-        
+
+    }
+
+    public enum EnrollmentStatus
+    {
+        Active,
+        Inactive,
+        Completed,
     }
 }

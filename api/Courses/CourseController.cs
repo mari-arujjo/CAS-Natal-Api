@@ -26,7 +26,7 @@ namespace api.Courses
         }
 
         [HttpGet("getById")]
-        public async Task<IActionResult> GetById(int id)
+        public async Task<IActionResult> GetById(Guid id)
         {
             var course = await _courseRep.GetByIdAsync(id);
             if (course == null) return NotFound();
@@ -49,7 +49,7 @@ namespace api.Courses
         }
 
         [HttpPut("putCourse/{id}")]
-        public async Task<IActionResult> UpdatePutCourse([FromRoute] int id, [FromBody] UpdateCourseDto dto)
+        public async Task<IActionResult> UpdatePutCourse([FromRoute] Guid id, [FromBody] UpdateCourseDto dto)
         {
             var course = await _courseRep.UpdateAsync(id, dto);
             if (course == null) return NotFound();
@@ -57,7 +57,7 @@ namespace api.Courses
         }
 
         [HttpDelete("deleteCourse/{id}")]
-        public async Task<IActionResult> DeleteCourse([FromRoute] int id)
+        public async Task<IActionResult> DeleteCourse([FromRoute] Guid id)
         {
             var course = await _courseRep.DeleteAsync(id);
             if (course == null) return NotFound();

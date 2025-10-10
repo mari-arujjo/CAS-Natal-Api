@@ -9,7 +9,8 @@ namespace api.Lessons
     public class Lesson
     {
         [Key]
-        public int Id { get; set; }
+        public Guid Id { get; set; } = Guid.NewGuid();
+        public string LessonCode { get; set; } = string.Empty; //LS-HCN-hash do guid
         public string Name { get; set; } = string.Empty;
         public bool Completed { get; set; } = false;
         public string Url { get; set; } = string.Empty;
@@ -17,7 +18,7 @@ namespace api.Lessons
 
         public List<Glossary> Glossaries { get; set; } = new List<Glossary>();
 
-        public int CourseId { get; set; }
-        public Course Course { get; set; } //navigation propriety
+        public Guid CourseId { get; set; }
+        public Course Course { get; set; }
     }
 }

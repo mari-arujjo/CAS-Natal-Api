@@ -8,7 +8,6 @@ namespace api.AppUserIdentity
 {
     public class AppUser : IdentityUser
     {
-        public int PrivateId { get; set; }
         public string FullName { get; set; } = string.Empty;
         public byte[]? Avatar { get; set; } = Array.Empty<byte>();
         public string PrivateRole { get; set; } = string.Empty;

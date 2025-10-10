@@ -18,7 +18,7 @@ namespace api.Lessons.Repository
             return lesson;
         }
 
-        public async Task<Lesson> DeleteAsync(int id)
+        public async Task<Lesson> DeleteAsync(Guid id)
         {
             var lesson = await _context.Lessons.FirstOrDefaultAsync(l => l.Id == id);
             if (lesson == null) return null;
@@ -32,12 +32,12 @@ namespace api.Lessons.Repository
             return await _context.Lessons.ToListAsync();
         }
 
-        public async Task<Lesson> GetByIdAsync(int id)
+        public async Task<Lesson?> GetByIdAsync(Guid id)
         {
             return await _context.Lessons.FindAsync(id);
         }
 
-        public async Task<Lesson> UpdateAsync(int id, UpdateLessonDto dto)
+        public async Task<Lesson> UpdateAsync(Guid id, UpdateLessonDto dto)
         {
             var lesson = await _context.Lessons.FirstOrDefaultAsync(l => l.Id == id);
             if (lesson == null) return null;

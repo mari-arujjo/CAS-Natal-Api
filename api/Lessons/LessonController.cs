@@ -28,7 +28,7 @@ namespace api.Lessons
         }
 
         [HttpGet("getById")]
-        public async Task<IActionResult> GetById(int id)
+        public async Task<IActionResult> GetById(Guid id)
         {
             var lessons = await _lessonRep.GetByIdAsync(id);
             if (lessons == null) return NotFound();
@@ -36,7 +36,7 @@ namespace api.Lessons
         }
 
         [HttpPost("postLesson/{courseId}")]
-        public async Task<IActionResult> NewLesson([FromRoute] int courseId, [FromBody] CreateLessonDto dto)
+        public async Task<IActionResult> NewLesson([FromRoute] Guid courseId, [FromBody] CreateLessonDto dto)
         {
             if (!await _courseRep.CourseExists(courseId)) return BadRequest("Course does not exist.");
             var lesson = dto.CreateNewLessonDto(courseId);
@@ -53,7 +53,7 @@ namespace api.Lessons
         }
 
         [HttpPut("putLesson/{id}")]
-        public async Task<IActionResult> UpdatePutLesson([FromRoute] int id, [FromBody] UpdateLessonDto dto)
+        public async Task<IActionResult> UpdatePutLesson([FromRoute] Guid id, [FromBody] UpdateLessonDto dto)
         {
             var lesson = await _lessonRep.UpdateAsync(id, dto);
             if (lesson == null) return NotFound();
@@ -61,7 +61,7 @@ namespace api.Lessons
         }
 
         [HttpDelete("deleteLesson/{id}")]
-        public async Task<IActionResult> UpdatePutLesson([FromRoute] int id)
+        public async Task<IActionResult> UpdatePutLesson([FromRoute] Guid id)
         {
             var lesson = await _lessonRep.DeleteAsync(id);
             if (lesson == null) return NotFound();

@@ -33,7 +33,7 @@ namespace api
                 .WithMany(u => u.Enrollments)
                 .HasForeignKey(p => p.CourseId);
 
-            builder.Entity<AppUser>().Property(u => u.PrivateId).ValueGeneratedOnAdd();
+            builder.Entity<AppUser>().Property(u => u.Id).ValueGeneratedOnAdd();
 
             List<IdentityRole> roles = new List<IdentityRole> {
                 new IdentityRole{

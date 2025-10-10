@@ -8,11 +8,12 @@ namespace api.Glossaries
     public class Glossary
     {
         [Key]
-        public int Id { get; set; }
+        public Guid Id { get; set; } = Guid.NewGuid();
+        public string GlossaryCode { get; set; } = string.Empty; //GL-hash do guid
         public string Sign { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
-        public string Url { get; set; } = string.Empty;
-        public byte[]? Photo { get; set; } = Array.Empty<byte>();
+        public string? Url { get; set; } = null;
+        public byte[]? Photo { get; set; } = null;
         public string Category { get; set; } = string.Empty;
 
         public ICollection<Lesson> Lessons { get; set; } = new List<Lesson>();

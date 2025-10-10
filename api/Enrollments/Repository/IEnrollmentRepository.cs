@@ -7,5 +7,6 @@ namespace api.Enrollments.Repository
     {
         Task<List<Enrollment>> GetEnrollment();
         Task<List<Course>> GetUserEnrollment(AppUser user);
+        Task<Enrollment> CreateEnrollment(Enrollment enrollment);
     }
 }

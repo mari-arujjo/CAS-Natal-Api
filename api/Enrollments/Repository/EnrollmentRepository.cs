@@ -12,6 +12,13 @@ namespace api.Enrollments.Repository
             _context = context;
         }
 
+        public async Task<Enrollment> CreateEnrollment(Enrollment enrollment)
+        {
+            await _context.Enrollments.AddAsync(enrollment);
+            await _context.SaveChangesAsync();
+            return enrollment;
+        }
+
         public Task<List<Enrollment>> GetEnrollment()
         {
             return _context.Enrollments.ToListAsync();
@@ -24,7 +31,7 @@ namespace api.Enrollments.Repository
             {
                 Id = course.Course.Id,
                 Name = course.Course.Name,
-                Abbreviation = course.Course.Abbreviation,
+                Symbol = course.Course.Symbol,
                 Description = course.Course.Description,
                 Photo = course.Course.Photo,
                 Lessons = course.Course.Lessons,

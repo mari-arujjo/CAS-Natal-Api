@@ -18,7 +18,7 @@ namespace api.Lessons
             };
         }
 
-        public static Lesson CreateNewLessonDto(this CreateLessonDto dto, int courseId)
+        public static Lesson CreateNewLessonDto(this CreateLessonDto dto, Guid courseId)
         {
             return new Lesson 
             {

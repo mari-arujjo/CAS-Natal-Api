@@ -9,11 +9,12 @@ namespace api.Courses
     public class Course
     {
         [Key]
-        public int Id { get; set; }
+        public Guid Id { get; set; } = Guid.NewGuid();
+        public string CourseCode { get; set; } = string.Empty; //CS-HCN-hash do guid
         public string Name { get; set; } = string.Empty;
-        public string Abbreviation { get; set; } = string.Empty;
+        public string Symbol { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
-        public byte[]? Photo { get; set; } = Array.Empty<byte>();
+        public byte[]? Photo { get; set; } = null;
 
         public List<Lesson> Lessons { get; set; } = new List<Lesson>();
         public List<Enrollment> Enrollments { get; set; } = new List<Enrollment>();
