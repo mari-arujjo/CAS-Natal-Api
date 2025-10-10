@@ -12,6 +12,10 @@ namespace api.Enrollments.Repository
             _context = context;
         }
 
+        public Task<List<Enrollment>> GetEnrollment()
+        {
+            return _context.Enrollments.ToListAsync();
+        }
 
         public async Task<List<Course>> GetUserEnrollment(AppUser user)
         {

@@ -22,6 +22,14 @@ namespace api.Enrollments
             _courseRep = courseRep;
         }
 
+        [HttpGet("getAll")]
+        //[Authorize]
+        public async Task<IActionResult> GetAll()
+        {
+            var enrollment = await _enrollmentRep.GetEnrollment();
+            return Ok(enrollment);
+        }
+
         [HttpGet("getUserEnrollment")]
         [Authorize]
         public async Task<IActionResult> GetUserEnrollment()
