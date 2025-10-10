@@ -18,4 +18,25 @@ namespace api.Glossaries
 
         public ICollection<Lesson> Lessons { get; set; } = new List<Lesson>();
     }
+
+    public enum GlossaryCategory
+    {
+        [Display(Name = "Emoções e Comunicação")]
+        EmoçõesEComunicacao,
+
+        [Display(Name = "Sinais Regionais")]
+        SinaisRegionais,
+
+        [Display(Name = "Pessoas e Profissões")]
+        PessoasEProfissoes,
+
+        [Display(Name = "Verbos e Adjetivos")]
+        VerbosEAdjetivos,
+
+        [Display(Name ="Mídia e Tecnologia")]
+        MidiaETecnologia,
+
+        [Display(Name = "Clima e Natureza")]
+        ClimaENatureza,
+    }
 }
