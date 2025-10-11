@@ -1,10 +1,13 @@
 ﻿using api.AppUserIdentity;
 using api.Claims;
+using api.Courses;
 using api.Courses.Repository;
 using api.Enrollments.Repository;
+using api.Generate_Codes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace api.Enrollments
 {
@@ -55,17 +58,17 @@ namespace api.Enrollments
 
             var userEnrollment = await _enrollmentRep.GetUserEnrollment(appUser);
             if (userEnrollment.Any(e => e.Symbol.ToLower() == abbreviation.ToLower())) return BadRequest("User already enrolled in this course.");
-            var enrollment = new Enrollment
-            {
-                CourseId = course.Id,
-                UserId = appUser.Id,
-                Date = DateTime.UtcNow,
-                Status = EnrollmentStatus.Active,
-                ProgressPercentage = 0
-            };
+            var enrollment = new Enrollment();
+            enrollment.CourseId = course.Id;
+            enrollment.UserId = appUser.Id;
+            enrollment.EnrollmentCode = GenerateCodes.GenerateEnrollmentCode(course.Symbol, enrollment.Id);
+            enrollment.Date = DateTime.UtcNow;
+            enrollment.Status = EnrollmentStatus.Active;
+            enrollment.ProgressPercentage = 0;
+
             await _enrollmentRep.CreateEnrollment(enrollment);
             if (enrollment == null) return BadRequest("Enrollment could not be created.");
-            return Created();
+            return Created("", enrollment.ConvertToEnrollmentDto());
         }
 
     }

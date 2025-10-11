@@ -1,5 +1,7 @@
 ﻿using api.Courses.Dtos;
 using api.Courses.Repository;
+using api.Enrollments;
+using api.Generate_Codes;
 using Microsoft.AspNetCore.Mvc;
 
 namespace api.Courses
@@ -37,6 +39,7 @@ namespace api.Courses
         public async Task<IActionResult> NewCourse([FromBody] CreateCourseDto dto)
         {
             var course = dto.CreateNewCourseDto();
+            course.CourseCode = GenerateCodes.GenerateCourseCode(course.Symbol, course.Id);
             await _courseRep.CreateAsync(course);
             return CreatedAtAction(
                 nameof(GetById),

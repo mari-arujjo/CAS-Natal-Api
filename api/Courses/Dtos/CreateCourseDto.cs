@@ -19,7 +19,7 @@ namespace api.Courses.Dtos
         [MaxLength(300, ErrorMessage = "Limite de caracteres: 300")]
         public string Description { get; set; } = string.Empty;
 
-        public byte[]? Photo { get; set; }
+        //public byte[]? Photo { get; set; }
 
     }
 }

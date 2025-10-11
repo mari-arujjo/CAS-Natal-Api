@@ -1,7 +1,5 @@
-﻿using api.Enrollments;
-using api.Lessons;
+﻿using api.Enrollments.Dtos;
 using api.Lessons.Dtos;
-using System.ComponentModel.DataAnnotations;
 
 namespace api.Courses.Dtos
 {
@@ -14,7 +12,7 @@ namespace api.Courses.Dtos
         public string Description { get; set; } = string.Empty;
         public byte[]? Photo { get; set; } = null;
         public List<LessonDto> Lessons { get; set; } = new List<LessonDto>();
-        public List<Enrollment> Enrollments { get; set; } = new List<Enrollment>();
+        public List<EnrollmentDto> Enrollments { get; set; } = new List<EnrollmentDto>();
 
     }
 }

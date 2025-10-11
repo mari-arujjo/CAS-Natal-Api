@@ -1,4 +1,6 @@
-﻿using api.Courses.Repository;
+﻿using api.Courses;
+using api.Courses.Repository;
+using api.Generate_Codes;
 using api.Lessons.Dtos;
 using api.Lessons.Repository;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -43,7 +45,7 @@ namespace api.Lessons
             await _lessonRep.CreateAsync(lesson);
             return CreatedAtAction
             (
-                nameof(GetById),
+            nameof(GetById),
                 new
                 {
                     id = lesson.Id, 

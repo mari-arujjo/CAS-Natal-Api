@@ -35,7 +35,7 @@ namespace api.Courses.Repository
 
         public async Task<List<Course>> GetAllAsync()
         {
-            return await _context.Courses.Include(l => l.Lessons).ToListAsync();
+            return await _context.Courses.Include(l => l.Lessons).Include(e => e.Enrollments).ToListAsync();
         }
 
         public async Task<Course?> GetBySymbol(string abbreviation)

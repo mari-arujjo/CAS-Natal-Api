@@ -2,6 +2,7 @@
 using System;
 using api.Courses.Dtos;
 using api.Lessons;
+using api.Enrollments;
 
 namespace api.Courses
 {
@@ -14,11 +15,13 @@ namespace api.Courses
             return new CourseDto
             {
                 Id = c.Id,
+                CourseCode = c.CourseCode,
                 Name = c.Name,
                 Symbol = c.Symbol,
                 Description = c.Description,
                 Photo = c.Photo,
-                Lessons = c.Lessons.Select(l => l.ConvertToLessonDto()).ToList()
+                Lessons = c.Lessons.Select(l => l.ConvertToLessonDto()).ToList(),
+                Enrollments = c.Enrollments.Select(e => e.ConvertToEnrollmentDto()).ToList()
             };
         }
 
@@ -31,6 +34,5 @@ namespace api.Courses
                 Description = c.Description
             };
         }
-
     }
 }
