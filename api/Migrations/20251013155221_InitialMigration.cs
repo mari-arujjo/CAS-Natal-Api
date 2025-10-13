@@ -9,7 +9,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace api.Migrations
 {
     /// <inheritdoc />
-    public partial class RefactDatabase : Migration
+    public partial class InitialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -199,17 +199,17 @@ namespace api.Migrations
                 name: "Enrollments",
                 columns: table => new
                 {
-                    CourseId = table.Column<Guid>(type: "uuid", nullable: false),
-                    UserId = table.Column<string>(type: "text", nullable: false),
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     EnrollmentCode = table.Column<string>(type: "text", nullable: false),
                     Date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     Status = table.Column<int>(type: "integer", nullable: false),
-                    ProgressPercentage = table.Column<int>(type: "integer", nullable: false)
+                    ProgressPercentage = table.Column<int>(type: "integer", nullable: false),
+                    CourseId = table.Column<Guid>(type: "uuid", nullable: false),
+                    UserId = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Enrollments", x => new { x.UserId, x.CourseId });
+                    table.PrimaryKey("PK_Enrollments", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Enrollments_AspNetUsers_UserId",
                         column: x => x.UserId,
@@ -248,7 +248,7 @@ namespace api.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "GlossaryLesson",
+                name: "LessonGlossaries",
                 columns: table => new
                 {
                     GlossariesId = table.Column<Guid>(type: "uuid", nullable: false),
@@ -256,15 +256,15 @@ namespace api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_GlossaryLesson", x => new { x.GlossariesId, x.LessonsId });
+                    table.PrimaryKey("PK_LessonGlossaries", x => new { x.GlossariesId, x.LessonsId });
                     table.ForeignKey(
-                        name: "FK_GlossaryLesson_Glossaries_GlossariesId",
+                        name: "FK_LessonGlossaries_Glossaries_GlossariesId",
                         column: x => x.GlossariesId,
                         principalTable: "Glossaries",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_GlossaryLesson_Lessons_LessonsId",
+                        name: "FK_LessonGlossaries_Lessons_LessonsId",
                         column: x => x.LessonsId,
                         principalTable: "Lessons",
                         principalColumn: "Id",
@@ -276,8 +276,8 @@ namespace api.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "12a2a079-b38a-4dea-8341-016edafa9705", null, "Default", "DEFAULT" },
-                    { "6d071750-86ac-47f8-951c-5bbba0453889", null, "Admin", "ADMIN" }
+                    { "be1beb1a-c2bc-464e-960a-330daef607ef", null, "Admin", "ADMIN" },
+                    { "efe758b9-b64a-42b6-a408-8ba44a4cfc01", null, "Default", "DEFAULT" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -323,8 +323,14 @@ namespace api.Migrations
                 column: "CourseId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_GlossaryLesson_LessonsId",
-                table: "GlossaryLesson",
+                name: "IX_Enrollments_UserId_CourseId",
+                table: "Enrollments",
+                columns: new[] { "UserId", "CourseId" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_LessonGlossaries_LessonsId",
+                table: "LessonGlossaries",
                 column: "LessonsId");
 
             migrationBuilder.CreateIndex(
@@ -355,7 +361,7 @@ namespace api.Migrations
                 name: "Enrollments");
 
             migrationBuilder.DropTable(
-                name: "GlossaryLesson");
+                name: "LessonGlossaries");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

@@ -12,8 +12,8 @@ using api;
 namespace api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20251011015042_RefactDatabase")]
-    partial class RefactDatabase
+    [Migration("20251013155221_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -37,7 +37,7 @@ namespace api.Migrations
 
                     b.HasIndex("LessonsId");
 
-                    b.ToTable("GlossaryLesson");
+                    b.ToTable("LessonGlossaries", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -68,13 +68,13 @@ namespace api.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "6d071750-86ac-47f8-951c-5bbba0453889",
+                            Id = "be1beb1a-c2bc-464e-960a-330daef607ef",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "12a2a079-b38a-4dea-8341-016edafa9705",
+                            Id = "efe758b9-b64a-42b6-a408-8ba44a4cfc01",
                             Name = "Default",
                             NormalizedName = "DEFAULT"
                         });
@@ -189,7 +189,6 @@ namespace api.Migrations
             modelBuilder.Entity("api.AppUserIdentity.AppUser", b =>
                 {
                     b.Property<string>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("text");
 
                     b.Property<int>("AccessFailedCount")
@@ -294,8 +293,9 @@ namespace api.Migrations
 
             modelBuilder.Entity("api.Enrollments.Enrollment", b =>
                 {
-                    b.Property<string>("UserId")
-                        .HasColumnType("text");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
 
                     b.Property<Guid>("CourseId")
                         .HasColumnType("uuid");
@@ -307,18 +307,22 @@ namespace api.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<Guid>("Id")
-                        .HasColumnType("uuid");
-
                     b.Property<int>("ProgressPercentage")
                         .HasColumnType("integer");
 
                     b.Property<int>("Status")
                         .HasColumnType("integer");
 
-                    b.HasKey("UserId", "CourseId");
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("CourseId");
+
+                    b.HasIndex("UserId", "CourseId")
+                        .IsUnique();
 
                     b.ToTable("Enrollments");
                 });

@@ -23,17 +23,23 @@ namespace api
         {
             base.OnModelCreating(builder);
 
-            builder.Entity<Enrollment>(x => x.HasKey(p => new {p.UserId, p.CourseId}));
+            //builder.Entity<Enrollment>(x => x.HasKey(p => new {p.UserId, p.CourseId}));
             builder.Entity<Enrollment>()
-                .HasOne(u => u.User)
+                .HasOne(e => e.User)
                 .WithMany(u => u.Enrollments)
-                .HasForeignKey(p => p.UserId);
+                .HasForeignKey(e => e.UserId);
             builder.Entity<Enrollment>()
-                .HasOne(u => u.Course)
-                .WithMany(u => u.Enrollments)
-                .HasForeignKey(p => p.CourseId);
+                .HasOne(e => e.Course)
+                .WithMany(c => c.Enrollments)
+                .HasForeignKey(e => e.CourseId);
+            builder.Entity<Enrollment>()
+                .HasIndex(e => new { e.UserId, e.CourseId })
+                .IsUnique();
 
-            builder.Entity<AppUser>().Property(u => u.Id).ValueGeneratedOnAdd();
+            builder.Entity<Lesson>()
+                .HasMany(l => l.Glossaries)
+                .WithMany(g => g.Lessons)
+                .UsingEntity(j => j.ToTable("LessonGlossaries"));
 
             List<IdentityRole> roles = new List<IdentityRole> {
                 new IdentityRole{
