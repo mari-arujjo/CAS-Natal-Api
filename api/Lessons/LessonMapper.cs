@@ -9,6 +9,7 @@ namespace api.Lessons
             return new LessonDto
             {
                 Id = lesson.Id,
+                LessonCode = lesson.LessonCode,
                 Name = lesson.Name,
                 Completed = lesson.Completed,
                 Url = lesson.Url,

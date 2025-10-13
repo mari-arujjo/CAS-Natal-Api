@@ -1,5 +1,6 @@
 ﻿using api.Courses;
 using api.Courses.Repository;
+using api.Enrollments;
 using api.Generate_Codes;
 using api.Lessons.Dtos;
 using api.Lessons.Repository;
@@ -40,8 +41,11 @@ namespace api.Lessons
         [HttpPost("postLesson/{courseId}")]
         public async Task<IActionResult> NewLesson([FromRoute] Guid courseId, [FromBody] CreateLessonDto dto)
         {
-            if (!await _courseRep.CourseExists(courseId)) return BadRequest("Course does not exist.");
+            var course = await _courseRep.GetByIdAsync(courseId);
+            if (course == null) return BadRequest("Course does not exist.");
+
             var lesson = dto.CreateNewLessonDto(courseId);
+            lesson.LessonCode = GenerateCodes.GenerateLessonCode(course.Symbol, lesson.Id);
             await _lessonRep.CreateAsync(lesson);
             return CreatedAtAction
             (

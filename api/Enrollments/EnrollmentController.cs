@@ -1,13 +1,13 @@
 ﻿using api.AppUserIdentity;
 using api.Claims;
-using api.Courses;
+using api.Courses.Dtos;
 using api.Courses.Repository;
+using api.Enrollments.Dtos;
 using api.Enrollments.Repository;
 using api.Generate_Codes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace api.Enrollments
 {
@@ -71,5 +71,13 @@ namespace api.Enrollments
             return Created("", enrollment.ConvertToEnrollmentDto());
         }
 
+
+        [HttpPut("putEnrollment/{id}")]
+        public async Task<IActionResult> UpdateEnrollment([FromRoute] Guid id, [FromBody] UpdateEnrollmentDto dto)
+        {
+            var enrollment = await _enrollmentRep.UpdateAsync(id, dto);
+            if (enrollment == null) return NotFound();
+            return Ok(enrollment.ConvertToEnrollmentDto());
+        }
     }
 }

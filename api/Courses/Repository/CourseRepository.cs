@@ -35,17 +35,17 @@ namespace api.Courses.Repository
 
         public async Task<List<Course>> GetAllAsync()
         {
-            return await _context.Courses.Include(l => l.Lessons).Include(e => e.Enrollments).ToListAsync();
+            return await _context.Courses.Include(l => l.Lessons).ToListAsync();
         }
 
         public async Task<Course?> GetBySymbol(string abbreviation)
         {
-            return await _context.Courses.FirstOrDefaultAsync(a => a.Symbol == abbreviation);
+            return await _context.Courses.Include(l => l.Lessons).FirstOrDefaultAsync(a => a.Symbol == abbreviation);
         }
 
         public async Task<Course?> GetByIdAsync(Guid id)
         {
-            return await _context.Courses.Include(l => l.Lessons).FirstOrDefaultAsync(c => c.Id == id);
+            return await _context.Courses.Include(l => l.Lessons).Include(e => e.Enrollments).FirstOrDefaultAsync(c => c.Id == id);
         }
 
         public async Task<Course> UpdateAsync(Guid id, UpdateCourseDto dto)

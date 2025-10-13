@@ -1,5 +1,6 @@
 ﻿using api.AppUserIdentity;
 using api.Courses;
+using api.Enrollments.Dtos;
 using Microsoft.EntityFrameworkCore;
 
 namespace api.Enrollments.Repository
@@ -36,6 +37,17 @@ namespace api.Enrollments.Repository
                 Photo = course.Course.Photo,
                 Lessons = course.Course.Lessons,
             }).ToListAsync();
+        }
+
+        public async Task<Enrollment> UpdateAsync(Guid id, UpdateEnrollmentDto dto)
+        {
+            var enrollment = await _context.Enrollments.FirstOrDefaultAsync(e => e.Id == id);
+            if (enrollment == null) return null;
+
+            enrollment.Status = dto.Status;
+
+            await _context.SaveChangesAsync();
+            return enrollment;
         }
     }
 }
