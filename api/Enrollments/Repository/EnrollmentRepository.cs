@@ -31,6 +31,7 @@ namespace api.Enrollments.Repository
             .Select(course => new Course
             {
                 Id = course.Course.Id,
+                CourseCode = course.Course.CourseCode,
                 Name = course.Course.Name,
                 Symbol = course.Course.Symbol,
                 Description = course.Course.Description,

@@ -1,5 +1,6 @@
 ﻿using api.AppUserIdentity.Dtos;
 using api.Service;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -91,6 +92,59 @@ namespace api.AppUserIdentity
 
             }
             catch (Exception e) {
+                return BadRequest(e.Message);
+            }
+        }
+
+
+        [Authorize]
+        [HttpPost("registerAdmin")]
+        public async Task<IActionResult> RegisterAdmin([FromBody] RegisterUserDto dto)
+        {
+            try
+            {
+                if (!ModelState.IsValid) return BadRequest(ModelState);
+
+                var defaultRole = "Admin";
+                var appUser = new AppUser
+                {
+                    FullName = dto.name,
+                    UserName = dto.username,
+                    Email = dto.email,
+                    PrivateRole = defaultRole,
+                };
+
+                var createdUser = await _userManager.CreateAsync(appUser, dto.password);
+                if (createdUser.Succeeded)
+                {
+                    var userRole = await _userManager.AddToRoleAsync(appUser, "Admin");
+                    if (userRole.Succeeded)
+                    {
+                        return Ok(
+                            new NewUserDto
+                            {
+                                name = appUser.FullName,
+                                username = appUser.UserName,
+                                email = appUser.Email,
+                                privateRole = appUser.PrivateRole,
+                                token = _tokenService.CreateToken(appUser)
+                            }
+                        );
+                    }
+                    else
+                    {
+                        return StatusCode(500, userRole.Errors);
+
+                    }
+                }
+                else
+                {
+                    return StatusCode(500, createdUser.Errors);
+                }
+
+            }
+            catch (Exception e)
+            {
                 return BadRequest(e.Message);
             }
         }

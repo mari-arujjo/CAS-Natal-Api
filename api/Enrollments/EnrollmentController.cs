@@ -49,15 +49,15 @@ namespace api.Enrollments
 
         [HttpPost("postEnrollment")]
         [Authorize]
-        public async Task<IActionResult> NewEnrollment(string abbreviation)
+        public async Task<IActionResult> NewEnrollment(string symbol)
         {
             var username = User.GetUsername();
             var appUser = await _userMan.FindByNameAsync(username);
-            var course = await _courseRep.GetBySymbol(abbreviation);
+            var course = await _courseRep.GetBySymbol(symbol);
             if (course == null) return BadRequest("Course not found.");
 
             var userEnrollment = await _enrollmentRep.GetUserEnrollment(appUser);
-            if (userEnrollment.Any(e => e.Symbol.ToLower() == abbreviation.ToLower())) return BadRequest("User already enrolled in this course.");
+            if (userEnrollment.Any(e => e.Symbol.ToLower() == symbol.ToLower())) return BadRequest("User already enrolled in this course.");
             var enrollment = new Enrollment();
             enrollment.CourseId = course.Id;
             enrollment.UserId = appUser.Id;

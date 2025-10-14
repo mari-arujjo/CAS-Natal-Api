@@ -23,7 +23,6 @@ namespace api
         {
             base.OnModelCreating(builder);
 
-            //builder.Entity<Enrollment>(x => x.HasKey(p => new {p.UserId, p.CourseId}));
             builder.Entity<Enrollment>()
                 .HasOne(e => e.User)
                 .WithMany(u => u.Enrollments)
