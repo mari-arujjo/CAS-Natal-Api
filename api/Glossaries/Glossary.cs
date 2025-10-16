@@ -14,7 +14,7 @@ namespace api.Glossaries
         public string Description { get; set; } = string.Empty;
         public string? Url { get; set; } = null;
         public byte[]? Photo { get; set; } = null;
-        public string Category { get; set; } = string.Empty;
+        public GlossaryCategory Category { get; set; }
 
         public ICollection<Lesson> Lessons { get; set; } = new List<Lesson>();
     }
