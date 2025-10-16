@@ -12,32 +12,34 @@ namespace api.Glossaries.Repository
         }
 
 
-        public Task<Glossary> CreateAsync(Glossary gloss)
+        public async Task<Glossary> CreateAsync(Glossary gloss)
+        {
+            await _context.Glossaries.AddAsync(gloss);
+            await _context.SaveChangesAsync();
+            return gloss;
+        }
+
+        public async Task<Glossary> DeleteAsync(Guid id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<Glossary> DeleteAsync(Guid id)
+        public async Task<List<Glossary>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return await _context.Glossaries.ToListAsync();
         }
 
-        public Task<List<Glossary>> GetAllAsync()
+        public async Task<Glossary?> GetByCategoryAsync(GlossaryCategory category)
         {
-            return _context.Glossaries.ToListAsync();
+            return await _context.Glossaries.FirstOrDefaultAsync(g => g.Category == category);
         }
 
-        public Task<Glossary?> GetByCategory(string category)
+        public async Task<Glossary?> GetByIdAsync(Guid id)
         {
-            throw new NotImplementedException();
+            return await _context.Glossaries.FirstOrDefaultAsync(g => g.Id == id);
         }
 
-        public Task<Glossary?> GetByIdAsync(Guid id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<Glossary> UpdateAsync(Guid id, UpdateGlossaryDto dto)
+        public async Task<Glossary> UpdateAsync(Guid id, UpdateGlossaryDto dto)
         {
             throw new NotImplementedException();
         }

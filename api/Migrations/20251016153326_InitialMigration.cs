@@ -82,7 +82,7 @@ namespace api.Migrations
                     Description = table.Column<string>(type: "text", nullable: false),
                     Url = table.Column<string>(type: "text", nullable: true),
                     Photo = table.Column<byte[]>(type: "bytea", nullable: true),
-                    Category = table.Column<string>(type: "text", nullable: false)
+                    Category = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -276,8 +276,8 @@ namespace api.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "be1beb1a-c2bc-464e-960a-330daef607ef", null, "Admin", "ADMIN" },
-                    { "efe758b9-b64a-42b6-a408-8ba44a4cfc01", null, "Default", "DEFAULT" }
+                    { "26f7984b-86d5-4098-80a8-9a4c103ca484", null, "Default", "DEFAULT" },
+                    { "60c8c08c-6d0e-4e45-b841-87409709284e", null, "Admin", "ADMIN" }
                 });
 
             migrationBuilder.CreateIndex(

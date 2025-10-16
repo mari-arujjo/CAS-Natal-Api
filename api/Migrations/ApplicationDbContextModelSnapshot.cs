@@ -65,13 +65,13 @@ namespace api.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "be1beb1a-c2bc-464e-960a-330daef607ef",
+                            Id = "60c8c08c-6d0e-4e45-b841-87409709284e",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "efe758b9-b64a-42b6-a408-8ba44a4cfc01",
+                            Id = "26f7984b-86d5-4098-80a8-9a4c103ca484",
                             Name = "Default",
                             NormalizedName = "DEFAULT"
                         });
@@ -330,9 +330,8 @@ namespace api.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<string>("Category")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("Category")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Description")
                         .IsRequired()
