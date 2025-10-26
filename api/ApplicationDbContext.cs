@@ -7,6 +7,7 @@ using api.Lessons;
 using api.Glossaries;
 using api.Enrollments;
 using api.AppUserIdentity;
+using api.Logs;
 
 namespace api
 {
@@ -18,6 +19,7 @@ namespace api
         public DbSet<Course> Courses { get; set; }
         public DbSet<Lesson> Lessons { get; set; }
         public DbSet<Glossary> Glossaries { get; set; }
+        public DbSet<Log> Logs { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

@@ -201,7 +201,7 @@ namespace api.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     EnrollmentCode = table.Column<string>(type: "text", nullable: false),
-                    Date = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Timestamp = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     Status = table.Column<int>(type: "integer", nullable: false),
                     ProgressPercentage = table.Column<int>(type: "integer", nullable: false),
                     CourseId = table.Column<Guid>(type: "uuid", nullable: false),
@@ -276,8 +276,8 @@ namespace api.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "26f7984b-86d5-4098-80a8-9a4c103ca484", null, "Default", "DEFAULT" },
-                    { "60c8c08c-6d0e-4e45-b841-87409709284e", null, "Admin", "ADMIN" }
+                    { "171a2ef5-43b2-48e2-aeef-463d140ce34c", null, "Admin", "ADMIN" },
+                    { "dda342e0-4705-4b68-8728-59a67e461794", null, "Default", "DEFAULT" }
                 });
 
             migrationBuilder.CreateIndex(

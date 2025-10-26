@@ -7,7 +7,7 @@ namespace api.Courses
 {
 
     [ApiController]
-    [Route("CASNatal/course")]
+    [Route("CASNatal/courses")]
     public class CourseController : ControllerBase
     {
         public readonly ICourseRepository _courseRep;
@@ -17,8 +17,8 @@ namespace api.Courses
         }
 
 
-        [HttpGet("getAll")]
-        public async Task<IActionResult> GetAll ()
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
         {
             var courses = await _courseRep.GetAllAsync();
             var coursesDto = courses.Select(c => c.ConvertToCourseDto());
@@ -26,15 +26,15 @@ namespace api.Courses
             return Ok(coursesDto);
         }
 
-        [HttpGet("getById")]
-        public async Task<IActionResult> GetById(Guid id)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById([FromRoute] Guid id)
         {
             var course = await _courseRep.GetByIdAsync(id);
             if (course == null) return NotFound();
             return Ok(course.ConvertToCourseDto());
         }
 
-        [HttpPost("postCourse")]
+        [HttpPost("create")]
         public async Task<IActionResult> NewCourse([FromBody] CreateCourseDto dto)
         {
             var course = dto.CreateNewCourseDto();
@@ -50,15 +50,22 @@ namespace api.Courses
             );
         }
 
-        [HttpPut("putCourse/{id}")]
+        [HttpPut("update/{id}")]
         public async Task<IActionResult> UpdatePutCourse([FromRoute] Guid id, [FromBody] UpdateCourseDto dto)
         {
-            var course = await _courseRep.UpdateAsync(id, dto);
+            var course = await _courseRep.GetByIdAsync(id);
             if (course == null) return NotFound();
-            return Ok(course.ConvertToCourseDto());
+
+            course.Name = dto.Name;
+            course.Symbol = dto.Symbol;
+            course.Description = dto.Description;
+            //course.Photo = dto.Photo;
+
+            var courseUpdated = await _courseRep.UpdateAsync(course);
+            return Ok(courseUpdated.ConvertToCourseDto());
         }
 
-        [HttpDelete("deleteCourse/{id}")]
+        [HttpDelete("delete/{id}")]
         public async Task<IActionResult> DeleteCourse([FromRoute] Guid id)
         {
             var course = await _courseRep.DeleteAsync(id);

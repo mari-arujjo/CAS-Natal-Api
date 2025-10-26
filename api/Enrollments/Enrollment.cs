@@ -12,7 +12,7 @@ namespace api.Enrollments
         [Key]
         public Guid Id { get; set; } = Guid.NewGuid();
         public string EnrollmentCode { get; set; } = string.Empty; //HCN-2025-hash do guid
-        public DateTime Date { get; set; } = DateTime.UtcNow;
+        public DateTime Timestamp { get; set; } = DateTime.UtcNow;
         public EnrollmentStatus Status { get; set; } = EnrollmentStatus.Active;
         public int ProgressPercentage { get; set; } = 0;
         ////////////////////////////////////////////////////

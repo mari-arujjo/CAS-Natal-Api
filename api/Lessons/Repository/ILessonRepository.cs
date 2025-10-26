@@ -2,12 +2,7 @@
 
 namespace api.Lessons.Repository
 {
-    public interface ILessonRepository
+    public interface ILessonRepository : IGenericRepository<Lesson, Guid>
     {
-        Task<List<Lesson>> GetAllAsync();
-        Task<Lesson?> GetByIdAsync(Guid id);
-        Task<Lesson> CreateAsync(Lesson lesson);
-        Task<Lesson> DeleteAsync(Guid id);
-        Task<Lesson> UpdateAsync(Guid id, UpdateLessonDto dto);
     }
 }

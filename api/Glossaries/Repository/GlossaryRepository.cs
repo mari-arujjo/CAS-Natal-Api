@@ -1,4 +1,5 @@
-﻿using api.Glossaries.Dtos;
+﻿using api.Courses;
+using api.Glossaries.Dtos;
 using Microsoft.EntityFrameworkCore;
 
 namespace api.Glossaries.Repository
@@ -19,9 +20,18 @@ namespace api.Glossaries.Repository
             return gloss;
         }
 
-        public async Task<Glossary> DeleteAsync(Guid id)
+        public async Task<Glossary?> DeleteAsync(Guid id)
         {
-            throw new NotImplementedException();
+            var glossary = await _context.Glossaries.FirstOrDefaultAsync(g => g.Id == id);
+            if (glossary == null) return null;
+            _context.Glossaries.Remove(glossary);
+            await _context.SaveChangesAsync();
+            return glossary;
+        }
+
+        public Task<bool> ExistsAsync(Guid id)
+        {
+            return _context.Glossaries.AnyAsync(g => g.Id == id);
         }
 
         public async Task<List<Glossary>> GetAllAsync()
@@ -39,9 +49,11 @@ namespace api.Glossaries.Repository
             return await _context.Glossaries.FirstOrDefaultAsync(g => g.Id == id);
         }
 
-        public async Task<Glossary> UpdateAsync(Guid id, UpdateGlossaryDto dto)
+        public async Task<Glossary> UpdateAsync(Glossary glossary)
         {
-            throw new NotImplementedException();
+            _context.Entry(glossary).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
+            return glossary;
         }
     }
 }

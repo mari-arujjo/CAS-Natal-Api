@@ -24,7 +24,7 @@ namespace api.Lessons
             return new Lesson 
             {
                 Name = dto.Name,
-                Completed = dto.Completed,
+                //Completed = dto.Completed,
                 Url = dto.Url,
                 Content = dto.Content,
                 CourseId = courseId

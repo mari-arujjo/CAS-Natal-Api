@@ -4,13 +4,8 @@ using api.Glossaries.Dtos;
 
 namespace api.Glossaries.Repository
 {
-    public interface IGlossaryRepository
+    public interface IGlossaryRepository : IGenericRepository<Glossary, Guid>
     {
-        Task<List<Glossary>> GetAllAsync();
-        Task<Glossary?> GetByIdAsync(Guid id);
         Task<Glossary?> GetByCategoryAsync(GlossaryCategory category);
-        Task<Glossary> CreateAsync(Glossary gloss);
-        Task<Glossary> DeleteAsync(Guid id);
-        Task<Glossary> UpdateAsync(Guid id, UpdateGlossaryDto dto);
     }
 }

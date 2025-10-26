@@ -6,11 +6,12 @@ using api.Lessons.Dtos;
 using api.Lessons.Repository;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace api.Lessons
 {
     [ApiController]
-    [Route("CASNatal/lesson")]
+    [Route("CASNatal/lessons")]
     public class LessonController : ControllerBase
     {
         private readonly ILessonRepository _lessonRep;
@@ -21,7 +22,7 @@ namespace api.Lessons
             _courseRep = courseRep;
         }
 
-        [HttpGet("getAll")]
+        [HttpGet]
         public async Task<IActionResult> GetAll()
         {
             var lessons = await _lessonRep.GetAllAsync();
@@ -30,15 +31,15 @@ namespace api.Lessons
             return Ok(lessonsDto);
         }
 
-        [HttpGet("getById")]
-        public async Task<IActionResult> GetById(Guid id)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById([FromRoute] Guid id)
         {
             var lessons = await _lessonRep.GetByIdAsync(id);
             if (lessons == null) return NotFound();
             return Ok(lessons.ConvertToLessonDto()); 
         }
 
-        [HttpPost("postLesson/{courseId}")]
+        [HttpPost("create/{courseId}")]
         public async Task<IActionResult> NewLesson([FromRoute] Guid courseId, [FromBody] CreateLessonDto dto)
         {
             var course = await _courseRep.GetByIdAsync(courseId);
@@ -58,15 +59,22 @@ namespace api.Lessons
             );
         }
 
-        [HttpPut("putLesson/{id}")]
+        [HttpPut("update/{id}")]
         public async Task<IActionResult> UpdatePutLesson([FromRoute] Guid id, [FromBody] UpdateLessonDto dto)
         {
-            var lesson = await _lessonRep.UpdateAsync(id, dto);
+            var lesson = await _lessonRep.GetByIdAsync(id);
             if (lesson == null) return NotFound();
-            return Ok(lesson.ConvertToLessonDto());
+
+            lesson.Name = dto.Name;
+            lesson.Completed = dto.Completed;
+            lesson.Url = dto.Url;
+            lesson.Content = dto.Content;
+
+            var lessonUpdated = await _lessonRep.UpdateAsync(lesson);
+            return Ok(lessonUpdated.ConvertToLessonDto());
         }
 
-        [HttpDelete("deleteLesson/{id}")]
+        [HttpDelete("delete/{id}")]
         public async Task<IActionResult> UpdatePutLesson([FromRoute] Guid id)
         {
             var lesson = await _lessonRep.DeleteAsync(id);

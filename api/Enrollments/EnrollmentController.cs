@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace api.Enrollments
 {
     [ApiController]
-    [Route("CASNatal/enrollment")]
+    [Route("CASNatal/enrollments")]
     public class EnrollmentController : ControllerBase
     {
         private readonly IEnrollmentRepository _enrollmentRep;
@@ -25,7 +25,7 @@ namespace api.Enrollments
             _courseRep = courseRep;
         }
 
-        [HttpGet("getAll")]
+        [HttpGet]
         //[Authorize]
         public async Task<IActionResult> GetAll()
         {
@@ -47,7 +47,7 @@ namespace api.Enrollments
             return Ok(userEnrollment);
         }
 
-        [HttpPost("postEnrollment")]
+        [HttpPost("create")]
         [Authorize]
         public async Task<IActionResult> NewEnrollment(string symbol)
         {
@@ -62,7 +62,7 @@ namespace api.Enrollments
             enrollment.CourseId = course.Id;
             enrollment.UserId = appUser.Id;
             enrollment.EnrollmentCode = GenerateCodes.GenerateEnrollmentCode(course.Symbol, enrollment.Id);
-            enrollment.Date = DateTime.UtcNow;
+            enrollment.Timestamp = DateTime.UtcNow;
             enrollment.Status = EnrollmentStatus.Active;
             enrollment.ProgressPercentage = 0;
 
@@ -72,7 +72,7 @@ namespace api.Enrollments
         }
 
 
-        [HttpPut("putEnrollment/{id}")]
+        [HttpPut("update/{id}")]
         public async Task<IActionResult> UpdateEnrollment([FromRoute] Guid id, [FromBody] UpdateEnrollmentDto dto)
         {
             var enrollment = await _enrollmentRep.UpdateAsync(id, dto);

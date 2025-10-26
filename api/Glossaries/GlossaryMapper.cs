@@ -28,8 +28,7 @@ namespace api.Glossaries
                 Sign = dto.Sign,
                 Description = dto.Description,
                 Url = dto.Url,
-                Category = dto.Category,
-                Lessons = dto.LessonsIds.Select(id => new Lesson { Id = id }).ToList(),
+                Category = dto.Category
             };
         }
     }

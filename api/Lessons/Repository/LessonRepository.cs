@@ -1,4 +1,5 @@
-﻿using api.Lessons.Dtos;
+﻿using api.Courses;
+using api.Lessons.Dtos;
 using Microsoft.EntityFrameworkCore;
 
 namespace api.Lessons.Repository
@@ -18,13 +19,19 @@ namespace api.Lessons.Repository
             return lesson;
         }
 
-        public async Task<Lesson> DeleteAsync(Guid id)
+        public async Task<Lesson?> DeleteAsync(Guid id)
         {
             var lesson = await _context.Lessons.FirstOrDefaultAsync(l => l.Id == id);
             if (lesson == null) return null;
             _context.Lessons.Remove(lesson);
             await _context.SaveChangesAsync();
             return lesson;
+        }
+
+        public Task<bool> ExistsAsync(Guid id)
+        {
+
+            return _context.Lessons.AnyAsync(c => c.Id == id);
         }
 
         public async Task<List<Lesson>> GetAllAsync()
@@ -46,6 +53,13 @@ namespace api.Lessons.Repository
             lesson.Completed = dto.Completed;
             lesson.Url = dto.Url;
             lesson.Content = dto.Content;
+            await _context.SaveChangesAsync();
+            return lesson;
+        }
+
+        public async Task<Lesson> UpdateAsync(Lesson lesson)
+        {
+            _context.Entry(lesson).State = EntityState.Modified;
             await _context.SaveChangesAsync();
             return lesson;
         }

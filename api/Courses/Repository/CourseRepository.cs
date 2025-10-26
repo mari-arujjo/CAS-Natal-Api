@@ -1,5 +1,4 @@
-﻿
-using api.Courses.Dtos;
+﻿using api.Courses.Dtos;
 using Microsoft.EntityFrameworkCore;
 
 namespace api.Courses.Repository
@@ -12,11 +11,6 @@ namespace api.Courses.Repository
             _context = context;
         }
 
-        public Task<bool> CourseExists(Guid id)
-        {
-            return _context.Courses.AnyAsync(c => c.Id == id);
-        }
-
         public async Task<Course> CreateAsync(Course course)
         {
             await _context.Courses.AddAsync(course);
@@ -24,7 +18,7 @@ namespace api.Courses.Repository
             return course;
         }
 
-        public async Task<Course> DeleteAsync(Guid id)
+        public async Task<Course?> DeleteAsync(Guid id)
         {
             var course = await _context.Courses.FirstOrDefaultAsync(c => c.Id == id);
             if (course == null) return null;
@@ -32,15 +26,14 @@ namespace api.Courses.Repository
             await _context.SaveChangesAsync();
             return course;
         }
+        public Task<bool> ExistsAsync(Guid id)
+        {
+            return _context.Courses.AnyAsync(c => c.Id == id);
+        }
 
         public async Task<List<Course>> GetAllAsync()
         {
             return await _context.Courses.Include(l => l.Lessons).ToListAsync();
-        }
-
-        public async Task<Course?> GetBySymbol(string abbreviation)
-        {
-            return await _context.Courses.Include(l => l.Lessons).FirstOrDefaultAsync(a => a.Symbol == abbreviation);
         }
 
         public async Task<Course?> GetByIdAsync(Guid id)
@@ -48,15 +41,14 @@ namespace api.Courses.Repository
             return await _context.Courses.Include(l => l.Lessons).Include(e => e.Enrollments).FirstOrDefaultAsync(c => c.Id == id);
         }
 
-        public async Task<Course> UpdateAsync(Guid id, UpdateCourseDto dto)
+        public async Task<Course?> GetBySymbol(string symbol)
         {
-            var course = await _context.Courses.FirstOrDefaultAsync(c => c.Id == id);
-            if (course == null) return null;
+            return await _context.Courses.Include(l => l.Lessons).FirstOrDefaultAsync(a => a.Symbol == symbol);
+        }
 
-            course.Name = dto.Name;
-            course.Symbol = dto.Symbol;
-            course.Description = dto.Description;
-            //course.Photo = dto.Photo;
+        public async Task<Course> UpdateAsync(Course course)
+        {
+            _context.Entry(course).State = EntityState.Modified;
             await _context.SaveChangesAsync();
             return course;
         }

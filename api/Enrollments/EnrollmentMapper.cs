@@ -10,7 +10,7 @@ namespace api.Enrollments
             {
                 Id = e.Id,
                 EnrollmentCode = e.EnrollmentCode,
-                Date = e.Date,
+                Timestamp = e.Timestamp,
                 Status = e.Status,
                 ProgressPercentage = e.ProgressPercentage,
                 CourseId = e.CourseId,
