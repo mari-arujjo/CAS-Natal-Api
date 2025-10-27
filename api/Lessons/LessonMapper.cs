@@ -1,21 +1,22 @@
-﻿using api.Lessons.Dtos;
+﻿using api.Glossaries;
+using api.Lessons.Dtos;
 
 namespace api.Lessons
 {
     public static class LessonMapper
     {
-        public static LessonDto ConvertToLessonDto(this Lesson lesson)
+        public static LessonDto ConvertToLessonDto(this Lesson l)
         {
             return new LessonDto
             {
-                Id = lesson.Id,
-                LessonCode = lesson.LessonCode,
-                Name = lesson.Name,
-                Completed = lesson.Completed,
-                Url = lesson.Url,
-                Content = lesson.Content,
-                CourseId = lesson.CourseId,
-                
+                Id = l.Id,
+                LessonCode = l.LessonCode,
+                Name = l.Name,
+                Completed = l.Completed,
+                Url = l.Url,
+                Content = l.Content,
+                CourseId = l.CourseId,
+                Glossaries = l.Glossaries.Select(g => g.ConvertToGlossaryDto()).ToList(),
             };
         }
 

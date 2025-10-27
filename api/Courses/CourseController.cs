@@ -26,10 +26,27 @@ namespace api.Courses
             return Ok(coursesDto);
         }
 
+        [HttpGet("lessons")]
+        public async Task<IActionResult> GetAllWithLessons()
+        {
+            var courses = await _courseRep.GetAllWithLessonsAsync();
+            var coursesDto = courses.Select(c => c.ConvertToCourseDto());
+            if (coursesDto == null) return NotFound();
+            return Ok(coursesDto);
+        }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById([FromRoute] Guid id)
         {
             var course = await _courseRep.GetByIdAsync(id);
+            if (course == null) return NotFound();
+            return Ok(course.ConvertToCourseDto());
+        }
+
+        [HttpGet("symbol/{symbol}")]
+        public async Task<IActionResult> GetBySymbol([FromRoute] string symbol)
+        {
+            var course = await _courseRep.GetBySymbol(symbol);
             if (course == null) return NotFound();
             return Ok(course.ConvertToCourseDto());
         }

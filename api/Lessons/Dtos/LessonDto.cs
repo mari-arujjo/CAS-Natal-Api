@@ -1,5 +1,6 @@
 ﻿using api.Courses;
 using api.Glossaries;
+using api.Glossaries.Dtos;
 
 namespace api.Lessons.Dtos
 {
@@ -12,6 +13,6 @@ namespace api.Lessons.Dtos
         public string Url { get; set; } = string.Empty;
         public string Content { get; set; } = string.Empty;
         public Guid CourseId { get; set; }
-        public List<Glossary> Glossaries { get; set; } = new List<Glossary>();
+        public List<GlossaryDto> Glossaries { get; set; } = new List<GlossaryDto>();
     }
 }

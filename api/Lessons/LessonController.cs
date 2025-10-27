@@ -31,6 +31,15 @@ namespace api.Lessons
             return Ok(lessonsDto);
         }
 
+        [HttpGet("glossaries")]
+        public async Task<IActionResult> GetAllWithGlossaries()
+        {
+            var lessons = await _lessonRep.GetAllWithGlossariesAsync();
+            var lessonsDto = lessons.Select(l => l.ConvertToLessonDto());
+            if (lessonsDto == null) return NotFound();
+            return Ok(lessonsDto);
+        }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById([FromRoute] Guid id)
         {

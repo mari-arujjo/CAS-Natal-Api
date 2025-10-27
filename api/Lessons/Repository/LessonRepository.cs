@@ -39,6 +39,11 @@ namespace api.Lessons.Repository
             return await _context.Lessons.ToListAsync();
         }
 
+        public async Task<List<Lesson>> GetAllWithGlossariesAsync()
+        {
+            return await _context.Lessons.Include(g => g.Glossaries).ToListAsync();
+        }
+
         public async Task<Lesson?> GetByIdAsync(Guid id)
         {
             return await _context.Lessons.FindAsync(id);

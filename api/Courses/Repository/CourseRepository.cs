@@ -33,6 +33,11 @@ namespace api.Courses.Repository
 
         public async Task<List<Course>> GetAllAsync()
         {
+            return await _context.Courses.ToListAsync();
+        }
+
+        public async Task<List<Course>> GetAllWithLessonsAsync()
+        {
             return await _context.Courses.Include(l => l.Lessons).ToListAsync();
         }
 
