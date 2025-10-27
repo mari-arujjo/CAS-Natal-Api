@@ -13,6 +13,6 @@ namespace api.Lessons.Dtos
         public string Url { get; set; } = string.Empty;
         public string Content { get; set; } = string.Empty;
         public Guid CourseId { get; set; }
-        public List<GlossaryDto> Glossaries { get; set; } = new List<GlossaryDto>();
+        public List<GlossaryDtoSimple> Glossaries { get; set; } = new List<GlossaryDtoSimple>();
     }
 }

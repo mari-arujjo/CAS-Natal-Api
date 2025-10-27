@@ -16,7 +16,17 @@ namespace api.Lessons
                 Url = l.Url,
                 Content = l.Content,
                 CourseId = l.CourseId,
-                Glossaries = l.Glossaries.Select(g => g.ConvertToGlossaryDto()).ToList(),
+                Glossaries = l.Glossaries.Select(g => g.ConvertToGlossaryDtoSimple()).ToList(),
+            };
+        }
+
+        public static LessonDtoSimple ConvertToLessonDtoSimple(this Lesson l)
+        {
+            return new LessonDtoSimple
+            {
+                Id = l.Id,
+                LessonCode = l.LessonCode,
+                Name = l.Name
             };
         }
 

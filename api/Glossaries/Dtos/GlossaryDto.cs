@@ -12,6 +12,6 @@ namespace api.Glossaries.Dtos
         public string? Url { get; set; } = null;
         public byte[]? Photo { get; set; } = null;
         public GlossaryCategory Category { get; set; }
-        public ICollection<LessonDto> Lessons { get; set; } = new List<LessonDto>();
+        public ICollection<LessonDtoSimple> Lessons { get; set; } = new List<LessonDtoSimple>();
     }
 }

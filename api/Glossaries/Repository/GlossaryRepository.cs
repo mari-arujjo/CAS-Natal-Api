@@ -39,6 +39,11 @@ namespace api.Glossaries.Repository
             return await _context.Glossaries.ToListAsync();
         }
 
+        public async Task<List<Glossary>> GetAllWithLessonsAsync()
+        {
+            return await _context.Glossaries.Include(l => l.Lessons).ToListAsync();
+        }
+
         public async Task<Glossary?> GetByCategoryAsync(GlossaryCategory category)
         {
             return await _context.Glossaries.FirstOrDefaultAsync(g => g.Category == category);

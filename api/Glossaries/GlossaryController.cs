@@ -28,6 +28,15 @@ namespace api.Glossaries
             return Ok(glossariesDto);
         }
 
+        [HttpGet("lessons")]
+        public async Task<IActionResult> GetAllWithLessons()
+        {
+            var glossaries = await _glossaryRep.GetAllWithLessonsAsync();
+            var glossariesDto = glossaries.Select(g => g.ConvertToGlossaryDto());
+            if (glossariesDto == null) return NotFound();
+            return Ok(glossariesDto);
+        }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById([FromRoute] Guid id)
         {
@@ -51,7 +60,8 @@ namespace api.Glossaries
             if (lesson == null) return NotFound();
 
             var glossary = dto.CreateNewGlossaryDto();
-            glossary.GlossaryCode = GenerateCodes.GenerateGlossaryCode(glossary.Id);            
+            glossary.GlossaryCode = GenerateCodes.GenerateGlossaryCode(glossary.Id);
+            glossary.Lessons.Add(lesson);
             await _glossaryRep.CreateAsync(glossary);
             return CreatedAtAction(
                 nameof(GetById),

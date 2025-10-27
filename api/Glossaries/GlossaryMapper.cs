@@ -17,7 +17,17 @@ namespace api.Glossaries
                 Url = g.Url,
                 Photo = g.Photo,
                 Category = g.Category,
-                Lessons = g.Lessons.Select(l => l.ConvertToLessonDto()).ToList(),
+                Lessons = g.Lessons.Select(l => l.ConvertToLessonDtoSimple()).ToList(),
+            };
+        }
+
+        public static GlossaryDtoSimple ConvertToGlossaryDtoSimple(this Glossary g)
+        {
+            return new GlossaryDtoSimple
+            {
+                Id = g.Id,
+                GlossaryCode = g.GlossaryCode,
+                Sign = g.Sign
             };
         }
 

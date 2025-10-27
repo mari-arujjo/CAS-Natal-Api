@@ -7,5 +7,6 @@ namespace api.Glossaries.Repository
     public interface IGlossaryRepository : IGenericRepository<Glossary, Guid>
     {
         Task<Glossary?> GetByCategoryAsync(GlossaryCategory category);
+        Task<List<Glossary>> GetAllWithLessonsAsync();
     }
 }
