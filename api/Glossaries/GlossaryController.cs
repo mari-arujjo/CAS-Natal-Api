@@ -54,7 +54,7 @@ namespace api.Glossaries
         }
 
         [HttpPost("create/{lessonId}")]
-        public async Task<IActionResult> NewGlossary([FromRoute] Guid lessonId,[FromBody] CreateGlossaryDto dto)
+        public async Task<IActionResult> NewGlossaryOneLesson([FromRoute] Guid lessonId,[FromBody] CreateGlossaryDto dto)
         {
             var lesson = await _lessonRep.GetByIdAsync(lessonId);
             if (lesson == null) return NotFound();
@@ -72,6 +72,44 @@ namespace api.Glossaries
                 glossary.ConvertToGlossaryDto()
             );
         }
+
+        [HttpPost("create")]
+        public async Task<IActionResult> NewGlossaryManyLessons([FromBody] CreateGlossaryDto dto)
+        {
+            if (!ModelState.IsValid) return ValidationProblem(ModelState);
+
+            var glossary = dto.CreateNewGlossaryDto();
+            glossary.GlossaryCode = GenerateCodes.GenerateGlossaryCode(glossary.Id);
+
+            if (dto.LessonIds is { Count: > 0 })
+            {
+                var distinctIds = dto.LessonIds.Distinct().ToList();
+                var lessons = await _lessonRep.GetByIdsAsync(distinctIds);
+
+                var found = lessons.Select(l => l.Id).ToHashSet();
+                var notFound = distinctIds.Where(id => !found.Contains(id)).ToList();
+                if (notFound.Count > 0)
+                {
+                    return BadRequest(new
+                    {
+                        error = "Some lessonIds were not found.",
+                        lessonIdsNotFound = notFound
+                    });
+                }
+
+                foreach (var lesson in lessons)
+                    glossary.Lessons.Add(lesson);
+            }
+
+            await _glossaryRep.CreateAsync(glossary);
+
+            return CreatedAtAction(
+                nameof(GetById),
+                new { id = glossary.Id },
+                glossary.ConvertToGlossaryDto()
+            );
+        }
+
 
         [HttpPut("update/{id}")]
         public async Task<IActionResult> UpdateGlossary([FromRoute] Guid id, CreateGlossaryDto dto)

@@ -16,7 +16,7 @@ namespace api.Glossaries
         public byte[]? Photo { get; set; } = null;
         public GlossaryCategory Category { get; set; }
 
-        public ICollection<Lesson> Lessons { get; set; } = new List<Lesson>();
+        public List<Lesson> Lessons { get; set; } = new List<Lesson>();
     }
 
     public enum GlossaryCategory

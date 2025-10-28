@@ -7,5 +7,6 @@
         public string Url { get; set; } = string.Empty;
         //public byte[] Photo { get; set; }
         public GlossaryCategory Category { get; set; }
+        public List<Guid>? LessonIds { get; set; }
     }
 }

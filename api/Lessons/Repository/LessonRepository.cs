@@ -49,6 +49,11 @@ namespace api.Lessons.Repository
             return await _context.Lessons.FindAsync(id);
         }
 
+        public async Task<List<Lesson>> GetByIdsAsync(IEnumerable<Guid> ids)
+        {
+            return await _context.Lessons.Where(l => ids.Contains(l.Id)).ToListAsync();
+        }
+
         public async Task<Lesson> UpdateAsync(Guid id, UpdateLessonDto dto)
         {
             var lesson = await _context.Lessons.FirstOrDefaultAsync(l => l.Id == id);

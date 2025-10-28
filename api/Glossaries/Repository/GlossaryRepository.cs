@@ -54,6 +54,11 @@ namespace api.Glossaries.Repository
             return await _context.Glossaries.FirstOrDefaultAsync(g => g.Id == id);
         }
 
+        public async Task<Glossary?> GetByIdWithLessonsAsync(Guid id)
+        {
+            return await _context.Glossaries.Include(g => g.Lessons).FirstOrDefaultAsync(g => g.Id == id);
+        }
+
         public async Task<Glossary> UpdateAsync(Glossary glossary)
         {
             _context.Entry(glossary).State = EntityState.Modified;

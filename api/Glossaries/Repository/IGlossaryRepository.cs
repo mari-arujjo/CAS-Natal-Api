@@ -8,5 +8,6 @@ namespace api.Glossaries.Repository
     {
         Task<Glossary?> GetByCategoryAsync(GlossaryCategory category);
         Task<List<Glossary>> GetAllWithLessonsAsync();
+        Task<Glossary?> GetByIdWithLessonsAsync(Guid id);
     }
 }
