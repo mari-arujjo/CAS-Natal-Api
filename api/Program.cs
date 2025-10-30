@@ -4,6 +4,7 @@ using api.Courses.Repository;
 using api.Enrollments.Repository;
 using api.Glossaries.Repository;
 using api.Lessons.Repository;
+using api.Logs;
 using api.Service;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -22,6 +23,7 @@ builder.Services.AddScoped<IEnrollmentRepository, EnrollmentRepository>();
 builder.Services.AddScoped<ICourseRepository, CourseRepository>();
 builder.Services.AddScoped<ILessonRepository, LessonRepository>();
 builder.Services.AddScoped<IGlossaryRepository, GlossaryRepository>();
+builder.Services.AddScoped<ILogRepository, LogRepository>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

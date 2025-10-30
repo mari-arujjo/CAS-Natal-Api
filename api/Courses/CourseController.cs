@@ -1,6 +1,7 @@
 ﻿using api.Courses.Dtos;
 using api.Courses.Repository;
 using api.Generate_Codes;
+using api.Logs;
 using Microsoft.AspNetCore.Mvc;
 
 namespace api.Courses
@@ -11,9 +12,11 @@ namespace api.Courses
     public class CourseController : ControllerBase
     {
         public readonly ICourseRepository _courseRep;
-        public CourseController(ICourseRepository courseRep)
+        public readonly LogController _logController;
+        public CourseController(ICourseRepository courseRep, LogController logController)
         {
             _courseRep = courseRep;
+            _logController = logController;
         }
 
 
@@ -57,6 +60,21 @@ namespace api.Courses
             var course = dto.CreateNewCourseDto();
             course.CourseCode = GenerateCodes.GenerateCourseCode(course.Symbol, course.Id);
             await _courseRep.CreateAsync(course);
+
+            var log = new Log();
+            log.Timestamp = DateTime.UtcNow;
+            log.UserId = null;
+            log.SourceIp = null;
+            log.Action = "CREATE";
+            log.Status = "SUCESS";
+            log.Table = "Courses";
+            log.RecordId = null;
+            log.BeforeState = null;
+            log.AfterState = null;
+            log.Details = null;
+            await _logController.NewLog(log);
+
+
             return CreatedAtAction(
                 nameof(GetById),
                 new
