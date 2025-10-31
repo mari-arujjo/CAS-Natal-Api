@@ -12,11 +12,11 @@ namespace api.Courses
     public class CourseController : ControllerBase
     {
         public readonly ICourseRepository _courseRep;
-        public readonly LogController _logController;
-        public CourseController(ICourseRepository courseRep, LogController logController)
+        public readonly ILogRepository _logRep;
+        public CourseController(ICourseRepository courseRep, ILogRepository logRep)
         {
             _courseRep = courseRep;
-            _logController = logController;
+            _logRep = logRep;
         }
 
 
@@ -57,32 +57,58 @@ namespace api.Courses
         [HttpPost("create")]
         public async Task<IActionResult> NewCourse([FromBody] CreateCourseDto dto)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var course = dto.CreateNewCourseDto();
             course.CourseCode = GenerateCodes.GenerateCourseCode(course.Symbol, course.Id);
-            await _courseRep.CreateAsync(course);
-
-            var log = new Log();
-            log.Timestamp = DateTime.UtcNow;
-            log.UserId = null;
-            log.SourceIp = null;
-            log.Action = "CREATE";
-            log.Status = "SUCESS";
-            log.Table = "Courses";
-            log.RecordId = null;
-            log.BeforeState = null;
-            log.AfterState = null;
-            log.Details = null;
-            await _logController.NewLog(log);
-
-
-            return CreatedAtAction(
-                nameof(GetById),
-                new
+            try
+            {
+                await _courseRep.CreateAsync(course);
+                var logSuccess = new Log
                 {
-                    id = course.Id,
-                },
-                course.ConvertToCourseDto()
-            );
+                    Timestamp = DateTime.UtcNow,
+                    UserId = null,
+                    SourceIp = null,
+                    Action = "CREATE",
+                    Status = "SUCCESS",
+                    Table = "Courses",
+                    RecordId = null,
+                    BeforeState = null,
+                    AfterState = null,
+                    Details = null
+                };
+                await _logRep.CreateAsync(logSuccess);
+
+                return CreatedAtAction(
+                    nameof(GetById),
+                    new
+                    {
+                        id = course.Id,
+                    },
+                    course.ConvertToCourseDto()
+                );
+            }
+            catch (Exception ex) {
+                var logFail = new Log
+                {
+                    Timestamp = DateTime.UtcNow,
+                    UserId = null,
+                    SourceIp = null,
+                    Action = "CREATE",
+                    Status = "FAILURE",
+                    Table = "Courses",
+                    RecordId = null,
+                    BeforeState = null,
+                    AfterState = null,
+                    Details = $"ERRO: {ex.Message}"
+                }; 
+                await _logRep.CreateAsync(logFail);
+                return BadRequest(ex);
+            }
+
         }
 
         [HttpPut("update/{id}")]

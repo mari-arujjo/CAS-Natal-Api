@@ -105,11 +105,13 @@ builder.Services.AddSwaggerGen(option =>
 });
 
 var app = builder.Build();
-if (app.Environment.IsDevelopment())
+app.UseSwagger();
+app.UseSwaggerUI(c =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "CAS Natal API v1");
+    c.DefaultModelsExpandDepth(-1);
+});
+
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();

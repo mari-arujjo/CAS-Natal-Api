@@ -29,20 +29,5 @@ namespace api.Logs
             if (log == null) return NotFound();
             return Ok(log);
         }
-
-        [HttpPost("create")]
-        public async Task<IActionResult> NewLog([FromBody] Log log)
-        {
-            await _logRep.CreateAsync(log);
-            return CreatedAtAction
-            (
-            nameof(GetById),
-                new
-                {
-                    id = log.Id,
-                },
-                log
-            );
-        }
     }
 }
