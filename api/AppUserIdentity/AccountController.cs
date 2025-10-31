@@ -23,6 +23,13 @@ namespace api.AppUserIdentity
             _signInManager = signInManager;
         }
 
+        [HttpGet("users")]
+        public async Task<IActionResult> GetAllWithLessons()
+        {
+            var users = await _userManager.Users.ToListAsync();
+            if (users == null) return NotFound();
+            return Ok(users);
+        }
 
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginDto dto)

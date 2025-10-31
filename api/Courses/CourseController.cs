@@ -64,52 +64,32 @@ namespace api.Courses
 
             var course = dto.CreateNewCourseDto();
             course.CourseCode = GenerateCodes.GenerateCourseCode(course.Symbol, course.Id);
-            try
+            await _courseRep.CreateAsync(course);
+            var logSuccess = new Log
             {
-                await _courseRep.CreateAsync(course);
-                var logSuccess = new Log
-                {
-                    Timestamp = DateTime.UtcNow,
-                    UserId = null,
-                    SourceIp = null,
-                    Action = "CREATE",
-                    Status = "SUCCESS",
-                    Table = "Courses",
-                    RecordId = null,
-                    BeforeState = null,
-                    AfterState = null,
-                    Details = null
-                };
-                await _logRep.CreateAsync(logSuccess);
+                Timestamp = DateTime.UtcNow,
+                UserId = null,
+                SourceIp = null,
+                Action = "CREATE",
+                Status = "SUCCESS",
+                Table = "Courses",
+                RecordId = null,
+                BeforeState = null,
+                AfterState = null,
+                Details = null
+            };
+            await _logRep.CreateAsync(logSuccess);
 
-                return CreatedAtAction(
-                    nameof(GetById),
-                    new
-                    {
-                        id = course.Id,
-                    },
-                    course.ConvertToCourseDto()
-                );
-            }
-            catch (Exception ex) {
-                var logFail = new Log
+            return CreatedAtAction(
+                nameof(GetById),
+                new
                 {
-                    Timestamp = DateTime.UtcNow,
-                    UserId = null,
-                    SourceIp = null,
-                    Action = "CREATE",
-                    Status = "FAILURE",
-                    Table = "Courses",
-                    RecordId = null,
-                    BeforeState = null,
-                    AfterState = null,
-                    Details = $"ERRO: {ex.Message}"
-                }; 
-                await _logRep.CreateAsync(logFail);
-                return BadRequest(ex);
-            }
-
+                    id = course.Id,
+                },
+                course.ConvertToCourseDto()
+            );
         }
+            
 
         [HttpPut("update/{id}")]
         public async Task<IActionResult> UpdatePutCourse([FromRoute] Guid id, [FromBody] UpdateCourseDto dto)
