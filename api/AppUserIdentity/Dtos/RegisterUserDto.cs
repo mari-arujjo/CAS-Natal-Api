@@ -15,7 +15,7 @@ namespace api.AppUserIdentity.Dtos
         public string username { get; set; }
 
         [Required]
-        [EmailAddress]
+        [EmailAddress(ErrorMessage = "Email inválido.")]
         public string email { get; set; }
 
         [Required]
