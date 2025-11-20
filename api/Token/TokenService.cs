@@ -23,6 +23,7 @@ namespace api.Service
             {
                new Claim(JwtRegisteredClaimNames.Email, user.Email),
                new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName),
+               new Claim(JwtRegisteredClaimNames.Name, user.FullName),
 
             };
 
