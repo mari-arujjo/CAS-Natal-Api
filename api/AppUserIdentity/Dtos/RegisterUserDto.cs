@@ -10,7 +10,7 @@ namespace api.AppUserIdentity.Dtos
         public string name { get; set; }
 
         [Required]
-        [MinLength(10, ErrorMessage = "O nome deve ter no mínimo 10 caracteres.")]
+        [MinLength(10, ErrorMessage = "O username deve ter no mínimo 10 caracteres.")]
         [MaxLength(20, ErrorMessage = "Limite de caracteres: 20")]
         public string username { get; set; }
 
