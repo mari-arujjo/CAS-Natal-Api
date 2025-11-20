@@ -21,9 +21,10 @@ namespace api.Service
         {
             var claims = new List<Claim>
             {
-               new Claim(JwtRegisteredClaimNames.Email, user.Email),
-               new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName),
-               new Claim(JwtRegisteredClaimNames.Name, user.FullName),
+                new Claim(JwtRegisteredClaimNames.Email, user.Email),
+                new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName),
+                new Claim(JwtRegisteredClaimNames.Name, user.FullName),
+                new Claim("privateRole", user.PrivateRole ?? "Default")
 
             };
 
