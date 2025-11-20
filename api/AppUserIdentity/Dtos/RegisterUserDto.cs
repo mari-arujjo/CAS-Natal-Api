@@ -19,6 +19,8 @@ namespace api.AppUserIdentity.Dtos
         public string email { get; set; }
 
         [Required]
+        [MinLength(5, ErrorMessage = "A senha deve ter no mínimo 5 caracteres.")]
+        [MaxLength(20, ErrorMessage = "A senha deve ter no máximo 20 caracteres.")]
         public string password { get; set; }
 
     }
