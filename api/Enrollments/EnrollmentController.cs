@@ -38,10 +38,10 @@ namespace api.Enrollments
         public async Task<IActionResult> GetUserEnrollment()
         {
             var username = User.GetUsername();
-            if (string.IsNullOrEmpty(username)) return BadRequest("Invalid token or username not found in token.");
+            if (string.IsNullOrEmpty(username)) return BadRequest("Token inválido ou username não encontrado no token.");
 
             var appUser = await _userMan.FindByNameAsync(username);
-            if (appUser == null) return BadRequest("User does not exists.");
+            if (appUser == null) return BadRequest("Usuário não existe");
 
             var userEnrollment = await _enrollmentRep.GetUserEnrollment(appUser);
             return Ok(userEnrollment);
@@ -54,10 +54,10 @@ namespace api.Enrollments
             var username = User.GetUsername();
             var appUser = await _userMan.FindByNameAsync(username);
             var course = await _courseRep.GetBySymbol(symbol);
-            if (course == null) return BadRequest("Course not found.");
+            if (course == null) return BadRequest("Curso não encontrado.");
 
             var userEnrollment = await _enrollmentRep.GetUserEnrollment(appUser);
-            if (userEnrollment.Any(e => e.Symbol.ToLower() == symbol.ToLower())) return BadRequest("User already enrolled in this course.");
+            if (userEnrollment.Any(e => e.Symbol.ToLower() == symbol.ToLower())) return BadRequest("O usuário já está matriculado neste curso.");
             var enrollment = new Enrollment();
             enrollment.CourseId = course.Id;
             enrollment.UserId = appUser.Id;
@@ -67,7 +67,7 @@ namespace api.Enrollments
             enrollment.ProgressPercentage = 0;
 
             await _enrollmentRep.CreateEnrollment(enrollment);
-            if (enrollment == null) return BadRequest("Enrollment could not be created.");
+            if (enrollment == null) return BadRequest("Matrícula não foi criada.");
             return Created("", enrollment.ConvertToEnrollmentDto());
         }
 

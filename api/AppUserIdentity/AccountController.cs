@@ -37,9 +37,9 @@ namespace api.AppUserIdentity
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
             var user = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == dto.username.ToLower());
-            if (user == null) return Unauthorized("Invalid username or password.");
+            if (user == null) return Unauthorized("Username ou senha inválidos.");
             var result = await _signInManager.CheckPasswordSignInAsync(user, dto.password, false);
-            if(!result.Succeeded) return Unauthorized("Invalid username or password.");
+            if(!result.Succeeded) return Unauthorized("Username ou senha inválidos.");
             return Ok(
                 new NewUserDto
                 {

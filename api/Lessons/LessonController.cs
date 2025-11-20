@@ -52,7 +52,7 @@ namespace api.Lessons
         public async Task<IActionResult> NewLesson([FromRoute] Guid courseId, [FromBody] CreateLessonDto dto)
         {
             var course = await _courseRep.GetByIdAsync(courseId);
-            if (course == null) return BadRequest("Course does not exist.");
+            if (course == null) return BadRequest("Curso não existe.");
 
             var lesson = dto.CreateNewLessonDto(courseId);
             lesson.LessonCode = GenerateCodes.GenerateLessonCode(course.Symbol, lesson.Id);
