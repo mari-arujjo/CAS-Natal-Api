@@ -1,4 +1,6 @@
-﻿namespace api.AppUserIdentity.Dtos
+﻿using System.ComponentModel;
+
+namespace api.AppUserIdentity.Dtos
 {
     public class AppUserDto
     {
@@ -8,5 +10,8 @@
         public string email { get; set; }
         public string privateRole { get; set; }
         public DateTime createdAt { get; set; }
+
+        [DefaultValue(true)]
+        public bool active { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace api.AppUserIdentity.Dtos
 {
@@ -9,6 +10,9 @@ namespace api.AppUserIdentity.Dtos
         public string email { get; set; }
         public string privateRole { get; set; }
         public DateTime createdAt { get; set; }
+
+        [DefaultValue(true)]
+        public bool active { get; set; }
         public string token { get; set; }
     }
 }

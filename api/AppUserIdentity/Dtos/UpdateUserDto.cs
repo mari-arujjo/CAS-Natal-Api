@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace api.AppUserIdentity.Dtos
 {
@@ -22,5 +23,8 @@ namespace api.AppUserIdentity.Dtos
         [MinLength(5, ErrorMessage = "A senha deve ter no mínimo 5 caracteres.")]
         [MaxLength(20, ErrorMessage = "A senha deve ter no máximo 20 caracteres.")]
         public string? password { get; set; }
+
+        [DefaultValue(true)]
+        public bool active { get; set; }
     }
 }

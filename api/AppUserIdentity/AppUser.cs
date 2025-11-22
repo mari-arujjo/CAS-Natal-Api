@@ -1,6 +1,7 @@
 ﻿using api.Courses;
 using api.Enrollments;
 using Microsoft.AspNetCore.Identity;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -9,6 +10,9 @@ namespace api.AppUserIdentity
     public class AppUser : IdentityUser
     {
         public string FullName { get; set; } = string.Empty;
+
+        [DefaultValue(true)]
+        public bool Active { get; set; }
         public byte[]? Avatar { get; set; } = null;
         public string PrivateRole { get; set; } = string.Empty;
         public ICollection<Enrollment> Enrollments { get; set; } = new List<Enrollment>();
