@@ -6,13 +6,13 @@ namespace api.Lessons.Dtos
 {
     public class LessonDto
     {
-        public Guid Id { get; set; }
-        public string LessonCode { get; set; } = string.Empty;
-        public string Name { get; set; } = string.Empty;
-        public bool Completed { get; set; } = false;
-        public string Url { get; set; } = string.Empty;
-        public string Content { get; set; } = string.Empty;
-        public Guid CourseId { get; set; }
-        public List<SignDtoSimple> Glossaries { get; set; } = new List<SignDtoSimple>();
+        public Guid id { get; set; }
+        public string lessonCode { get; set; } = string.Empty;
+        public string name { get; set; } = string.Empty;
+        public bool completed { get; set; } = false;
+        public string url { get; set; } = string.Empty;
+        public string content { get; set; } = string.Empty;
+        public Guid courseId { get; set; }
+        public List<SignDtoSimple> signs { get; set; } = new List<SignDtoSimple>();
     }
 }

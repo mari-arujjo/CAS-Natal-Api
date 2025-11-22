@@ -6,16 +6,16 @@ namespace api.Courses.Dtos
     {
         [MinLength(10, ErrorMessage = "O nome deve ter no mínimo 10 caracteres.")]
         [MaxLength(50, ErrorMessage = "Limite de caracteres: 50")]
-        public string Name { get; set; }
+        public string? name { get; set; }
 
         [MinLength(2, ErrorMessage = "A sigla deve ter no mínimo 2 caracteres.")]
         [MaxLength(4, ErrorMessage = "Limite de caracteres: 4")]
-        public string Symbol { get; set; }
+        public string? symbol { get; set; }
 
         [MinLength(10, ErrorMessage = "A descrição deve ter no mínimo 10 caracteres.")]
         [MaxLength(300, ErrorMessage = "Limite de caracteres: 300")]
-        public string Description { get; set; }
+        public string? description { get; set; }
 
-        //public byte[]? Photo { get; set; }
+        //public byte[]? photo { get; set; }
     }
 }

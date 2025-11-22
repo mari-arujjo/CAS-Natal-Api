@@ -9,14 +9,14 @@ namespace api.Lessons
         {
             return new LessonDto
             {
-                Id = l.Id,
-                LessonCode = l.LessonCode,
-                Name = l.Name,
-                Completed = l.Completed,
-                Url = l.Url,
-                Content = l.Content,
-                CourseId = l.CourseId,
-                Glossaries = l.Signs.Select(g => g.ConvertToGlossaryDtoSimple()).ToList(),
+                id = l.Id,
+                lessonCode = l.LessonCode,
+                name = l.Name,
+                completed = l.Completed,
+                url = l.Url,
+                content = l.Content,
+                courseId = l.CourseId,
+                signs = l.Signs.Select(g => g.ConvertToGlossaryDtoSimple()).ToList(),
             };
         }
 
@@ -24,9 +24,9 @@ namespace api.Lessons
         {
             return new LessonDtoSimple
             {
-                Id = l.Id,
-                LessonCode = l.LessonCode,
-                Name = l.Name
+                id = l.Id,
+                lessonCode = l.LessonCode,
+                name = l.Name
             };
         }
 
@@ -34,10 +34,10 @@ namespace api.Lessons
         {
             return new Lesson 
             {
-                Name = dto.Name,
+                Name = dto.name,
                 //Completed = dto.Completed,
-                Url = dto.Url,
-                Content = dto.Content,
+                Url = dto.url,
+                Content = dto.content,
                 CourseId = courseId
             };
         }

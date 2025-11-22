@@ -2,9 +2,9 @@
 {
     public class UpdateLessonDto
     {
-        public string Name { get; set; }
-        public bool Completed { get; set; } = false;
-        public string Url { get; set; }
-        public string Content { get; set; }
+        public string? name { get; set; }
+        public bool completed { get; set; } = false;
+        public string? url { get; set; }
+        public string? content { get; set; }
     }
 }

@@ -57,9 +57,9 @@ namespace api.Courses.Repository
             var course = await _context.Courses.FirstOrDefaultAsync(c => c.Id == id);
             if (course == null) return null;
 
-            course.Name = dto.Name;
-            course.Symbol = dto.Symbol;
-            course.Description = dto.Description;
+            course.Name = dto.name;
+            course.Symbol = dto.symbol;
+            course.Description = dto.description;
             course.UpdatedAt = DateTime.UtcNow;
             //course.Photo = dto.Photo;
             await _context.SaveChangesAsync();

@@ -60,10 +60,10 @@ namespace api.Lessons.Repository
             var lesson = await _context.Lessons.FirstOrDefaultAsync(l => l.Id == id);
             if (lesson == null) return null;
 
-            lesson.Name = dto.Name;
-            lesson.Completed = dto.Completed;
-            lesson.Url = dto.Url;
-            lesson.Content = dto.Content;
+            lesson.Name = dto.name;
+            lesson.Completed = dto.completed;
+            lesson.Url = dto.url;
+            lesson.Content = dto.content;
             lesson.UpdatedAt = DateTime.UtcNow;
             await _context.SaveChangesAsync();
             return lesson;

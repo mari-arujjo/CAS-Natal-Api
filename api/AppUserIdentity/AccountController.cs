@@ -1,7 +1,6 @@
 ﻿using api.AppUserIdentity.Dtos;
 using api.Service;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -24,11 +23,12 @@ namespace api.AppUserIdentity
         }
 
         [HttpGet("users")]
-        public async Task<IActionResult> GetAllWithLessons()
+        public async Task<IActionResult> GetAll()
         {
             var users = await _userManager.Users.ToListAsync();
-            if (users == null) return NotFound();
-            return Ok(users);
+            var usersDto = users.Select(u => u.ConvertToUserDto());
+            if (usersDto == null) return NotFound();
+            return Ok(usersDto);
         }
 
         [HttpPost("login")]
@@ -38,6 +38,7 @@ namespace api.AppUserIdentity
 
             var user = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == dto.username.ToLower());
             if (user == null) return Unauthorized("Username ou senha inválidos.");
+
             var result = await _signInManager.CheckPasswordSignInAsync(user, dto.password, false);
             if(!result.Succeeded) return Unauthorized("Username ou senha inválidos.");
             return Ok(
@@ -161,5 +162,43 @@ namespace api.AppUserIdentity
                 return BadRequest(e.Message);
             }
         }
+
+        
+        [Authorize]
+        [HttpPut("update")]
+        public async Task<IActionResult> UpdateUser([FromBody] UpdateUserDto dto)
+        {
+            var username = User.Identity?.Name;
+            if (string.IsNullOrEmpty(username)) return Unauthorized();
+
+            var user = await _userManager.FindByNameAsync(username);
+            if (user == null) return NotFound("Usuário não encontrado.");
+
+            user.FullName = dto.name;
+            user.UserName = dto.username;
+            user.Email = dto.email;
+            user.UpdatedAt = DateTime.UtcNow;
+
+            var updateResult = await _userManager.UpdateAsync(user);
+            if (!updateResult.Succeeded)
+            {
+                return StatusCode(500, updateResult.Errors);
+            }
+
+            var newToken = _tokenService.CreateToken(user);
+
+            return Ok(
+                new NewUserDto
+                {
+                    name = user.FullName,
+                    username = user.UserName,
+                    email = user.Email,
+                    privateRole = user.PrivateRole,
+                    token = newToken,
+                }
+            );
+        }
+
+
     }
 }

@@ -14,14 +14,14 @@ namespace api.Courses
         {
             return new CourseDto
             {
-                Id = c.Id,
-                CourseCode = c.CourseCode,
-                Name = c.Name,
-                Symbol = c.Symbol,
-                Description = c.Description,
-                Photo = c.Photo,
-                Lessons = c.Lessons.Select(l => l.ConvertToLessonDto()).ToList(),
-                Enrollments = c.Enrollments.Select(e => e.ConvertToEnrollmentDto()).ToList()
+                id = c.Id,
+                courseCode = c.CourseCode,
+                name = c.Name,
+                symbol = c.Symbol,
+                description = c.Description,
+                photo = c.Photo,
+                lessons = c.Lessons.Select(l => l.ConvertToLessonDto()).ToList(),
+                enrollments = c.Enrollments.Select(e => e.ConvertToEnrollmentDto()).ToList()
             };
         }
 
@@ -29,9 +29,9 @@ namespace api.Courses
         {
             return new Course
             {
-                Name = c.Name,
-                Symbol = c.Symbol,
-                Description = c.Description
+                Name = c.name,
+                Symbol = c.symbol,
+                Description = c.description
             };
         }
     }
