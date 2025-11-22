@@ -6,6 +6,7 @@ namespace api.Courses.Repository
     {
         Task<Course?> GetBySymbol(string symbol);
         Task<List<Course>> GetAllWithLessonsAsync();
+        Task<Course> UpdateAsync(Guid id, UpdateCourseDto dto);
 
     }
 }

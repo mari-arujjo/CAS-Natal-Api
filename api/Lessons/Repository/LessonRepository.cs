@@ -23,7 +23,8 @@ namespace api.Lessons.Repository
         {
             var lesson = await _context.Lessons.FirstOrDefaultAsync(l => l.Id == id);
             if (lesson == null) return null;
-            _context.Lessons.Remove(lesson);
+            lesson.DeletedAt = DateTime.UtcNow;
+            lesson.DeletedAt = DateTime.UtcNow;
             await _context.SaveChangesAsync();
             return lesson;
         }
@@ -41,7 +42,7 @@ namespace api.Lessons.Repository
 
         public async Task<List<Lesson>> GetAllWithGlossariesAsync()
         {
-            return await _context.Lessons.Include(g => g.Glossaries).ToListAsync();
+            return await _context.Lessons.Include(g => g.Signs).ToListAsync();
         }
 
         public async Task<Lesson?> GetByIdAsync(Guid id)
@@ -63,13 +64,7 @@ namespace api.Lessons.Repository
             lesson.Completed = dto.Completed;
             lesson.Url = dto.Url;
             lesson.Content = dto.Content;
-            await _context.SaveChangesAsync();
-            return lesson;
-        }
-
-        public async Task<Lesson> UpdateAsync(Lesson lesson)
-        {
-            _context.Entry(lesson).State = EntityState.Modified;
+            lesson.UpdatedAt = DateTime.UtcNow;
             await _context.SaveChangesAsync();
             return lesson;
         }

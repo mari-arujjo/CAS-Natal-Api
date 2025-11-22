@@ -1,7 +1,6 @@
 ﻿using api.Courses.Dtos;
 using api.Courses.Repository;
 using api.Generate_Codes;
-using api.Logs;
 using Microsoft.AspNetCore.Mvc;
 
 namespace api.Courses
@@ -12,11 +11,9 @@ namespace api.Courses
     public class CourseController : ControllerBase
     {
         public readonly ICourseRepository _courseRep;
-        public readonly ILogRepository _logRep;
-        public CourseController(ICourseRepository courseRep, ILogRepository logRep)
+        public CourseController(ICourseRepository courseRep)
         {
             _courseRep = courseRep;
-            _logRep = logRep;
         }
 
 
@@ -65,20 +62,6 @@ namespace api.Courses
             var course = dto.CreateNewCourseDto();
             course.CourseCode = GenerateCodes.GenerateCourseCode(course.Symbol, course.Id);
             await _courseRep.CreateAsync(course);
-            var logSuccess = new Log
-            {
-                Timestamp = DateTime.UtcNow,
-                UserId = null,
-                SourceIp = null,
-                Action = "CREATE",
-                Status = "SUCCESS",
-                Table = "Courses",
-                RecordId = null,
-                BeforeState = null,
-                AfterState = null,
-                Details = null
-            };
-            await _logRep.CreateAsync(logSuccess);
 
             return CreatedAtAction(
                 nameof(GetById),
@@ -94,16 +77,9 @@ namespace api.Courses
         [HttpPut("update/{id}")]
         public async Task<IActionResult> UpdatePutCourse([FromRoute] Guid id, [FromBody] UpdateCourseDto dto)
         {
-            var course = await _courseRep.GetByIdAsync(id);
+            var course = await _courseRep.UpdateAsync(id, dto);
             if (course == null) return NotFound();
-
-            course.Name = dto.Name;
-            course.Symbol = dto.Symbol;
-            course.Description = dto.Description;
-            //course.Photo = dto.Photo;
-
-            var courseUpdated = await _courseRep.UpdateAsync(course);
-            return Ok(courseUpdated.ConvertToCourseDto());
+            return Ok(course.ConvertToCourseDto());
         }
 
         [HttpDelete("delete/{id}")]

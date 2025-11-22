@@ -62,9 +62,11 @@ namespace api.Enrollments
             enrollment.CourseId = course.Id;
             enrollment.UserId = appUser.Id;
             enrollment.EnrollmentCode = GenerateCodes.GenerateEnrollmentCode(course.Symbol, enrollment.Id);
-            enrollment.Timestamp = DateTime.UtcNow;
             enrollment.Status = EnrollmentStatus.Active;
             enrollment.ProgressPercentage = 0;
+            enrollment.CreatedAt = DateTime.UtcNow;
+            enrollment.UpdatedAt = DateTime.UtcNow;
+            enrollment.DeletedAt = null;
 
             await _enrollmentRep.CreateEnrollment(enrollment);
             if (enrollment == null) return BadRequest("Matrícula não foi criada.");
@@ -78,6 +80,14 @@ namespace api.Enrollments
             var enrollment = await _enrollmentRep.UpdateAsync(id, dto);
             if (enrollment == null) return NotFound();
             return Ok(enrollment.ConvertToEnrollmentDto());
+        }
+
+        [HttpDelete("delete/{id}")]
+        public async Task<IActionResult> DeleteEnrollment([FromRoute] Guid id)
+        {
+            var enrollment = await _enrollmentRep.DeleteAsync(id);
+            if (enrollment == null) return NotFound();
+            return NoContent();
         }
     }
 }

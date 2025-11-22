@@ -1,5 +1,5 @@
 ﻿using api.Courses;
-using api.Glossaries;
+using api.Signs;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -19,8 +19,11 @@ namespace api.Lessons
 
         public string Url { get; set; } = string.Empty;
         public string Content { get; set; } = string.Empty;
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime? DeletedAt { get; set; }
 
-        public List<Glossary> Glossaries { get; set; } = new List<Glossary>();
+        public List<Sign> Signs { get; set; } = new List<Sign>();
 
         public Guid CourseId { get; set; }
         public Course Course { get; set; }

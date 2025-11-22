@@ -4,10 +4,9 @@ using System.Data.SqlTypes;
 using Microsoft.AspNetCore.Identity;
 using api.Courses;
 using api.Lessons;
-using api.Glossaries;
 using api.Enrollments;
 using api.AppUserIdentity;
-using api.Logs;
+using api.Signs;
 
 namespace api
 {
@@ -18,8 +17,7 @@ namespace api
         public DbSet<Enrollment> Enrollments { get; set; }
         public DbSet<Course> Courses { get; set; }
         public DbSet<Lesson> Lessons { get; set; }
-        public DbSet<Glossary> Glossaries { get; set; }
-        public DbSet<Log> Logs { get; set; }
+        public DbSet<Sign> Signs { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -38,9 +36,9 @@ namespace api
                 .IsUnique();
 
             builder.Entity<Lesson>()
-                .HasMany(l => l.Glossaries)
+                .HasMany(l => l.Signs)
                 .WithMany(g => g.Lessons)
-                .UsingEntity(j => j.ToTable("LessonGlossaries"));
+                .UsingEntity(j => j.ToTable("LessonsSigns"));
 
             List<IdentityRole> roles = new List<IdentityRole> {
                 new IdentityRole{
@@ -53,6 +51,13 @@ namespace api
                 },
             };
             builder.Entity<IdentityRole>().HasData(roles);
+
+
+            builder.Entity<AppUser>().HasQueryFilter(u => u.DeletedAt == null);
+            builder.Entity<Enrollment>().HasQueryFilter(e => e.DeletedAt == null);
+            builder.Entity<Course>().HasQueryFilter(c => c.DeletedAt == null);
+            builder.Entity<Lesson>().HasQueryFilter(l => l.DeletedAt == null);
+            builder.Entity<Sign>().HasQueryFilter(s => s.DeletedAt == null);
         }
     }
 }

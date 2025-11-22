@@ -8,13 +8,15 @@ namespace api.Enrollments
         {
             return new EnrollmentDto
             {
-                Id = e.Id,
-                EnrollmentCode = e.EnrollmentCode,
-                Timestamp = e.Timestamp,
-                Status = e.Status,
-                ProgressPercentage = e.ProgressPercentage,
-                CourseId = e.CourseId,
-                UserId = e.UserId,
+                id = e.Id,
+                enrollmentCode = e.EnrollmentCode,
+                status = e.Status,
+                progressPercentage = e.ProgressPercentage,
+                courseId = e.CourseId,
+                userId = e.UserId,
+                createdAt = e.CreatedAt,
+                updatedAt = e.UpdatedAt,
+                deletedAt = e.DeletedAt,
             };
         }
     }

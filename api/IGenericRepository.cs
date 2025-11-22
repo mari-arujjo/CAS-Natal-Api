@@ -7,7 +7,6 @@ namespace api
         Task<List<TEntity>> GetAllAsync();
         Task<TEntity?> GetByIdAsync(TId id);
         Task<TEntity> CreateAsync (TEntity entity);
-        Task<TEntity> UpdateAsync(TEntity entity);
         Task<TEntity?> DeleteAsync(TId id);
         Task<bool> ExistsAsync(TId id);
     }

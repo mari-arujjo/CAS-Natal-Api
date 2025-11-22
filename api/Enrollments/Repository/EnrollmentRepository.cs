@@ -20,6 +20,19 @@ namespace api.Enrollments.Repository
             return enrollment;
         }
 
+        public async Task<Enrollment?> DeleteAsync(Guid id)
+        {
+            var enrollment = await _context.Enrollments.FirstOrDefaultAsync(e => e.Id == id);
+            if (enrollment == null) return null;
+
+            enrollment.Status = EnrollmentStatus.Inactive;
+            enrollment.UpdatedAt = DateTime.UtcNow;
+            enrollment.DeletedAt = DateTime.UtcNow;
+
+            await _context.SaveChangesAsync();
+            return enrollment;
+        }
+
         public Task<List<Enrollment>> GetEnrollment()
         {
             return _context.Enrollments.ToListAsync();
@@ -45,7 +58,8 @@ namespace api.Enrollments.Repository
             var enrollment = await _context.Enrollments.FirstOrDefaultAsync(e => e.Id == id);
             if (enrollment == null) return null;
 
-            enrollment.Status = dto.Status;
+            enrollment.Status = dto.status;
+            enrollment.UpdatedAt = DateTime.UtcNow;
 
             await _context.SaveChangesAsync();
             return enrollment;

@@ -22,7 +22,8 @@ namespace api.Courses.Repository
         {
             var course = await _context.Courses.FirstOrDefaultAsync(c => c.Id == id);
             if (course == null) return null;
-            _context.Courses.Remove(course);
+            course.UpdatedAt = DateTime.UtcNow;
+            course.DeletedAt = DateTime.UtcNow;
             await _context.SaveChangesAsync();
             return course;
         }
@@ -51,9 +52,16 @@ namespace api.Courses.Repository
             return await _context.Courses.Include(l => l.Lessons).FirstOrDefaultAsync(a => a.Symbol == symbol);
         }
 
-        public async Task<Course> UpdateAsync(Course course)
+        public async Task<Course> UpdateAsync(Guid id, UpdateCourseDto dto)
         {
-            _context.Entry(course).State = EntityState.Modified;
+            var course = await _context.Courses.FirstOrDefaultAsync(c => c.Id == id);
+            if (course == null) return null;
+
+            course.Name = dto.Name;
+            course.Symbol = dto.Symbol;
+            course.Description = dto.Description;
+            course.UpdatedAt = DateTime.UtcNow;
+            //course.Photo = dto.Photo;
             await _context.SaveChangesAsync();
             return course;
         }

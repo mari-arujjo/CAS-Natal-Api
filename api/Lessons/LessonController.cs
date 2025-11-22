@@ -71,16 +71,9 @@ namespace api.Lessons
         [HttpPut("update/{id}")]
         public async Task<IActionResult> UpdatePutLesson([FromRoute] Guid id, [FromBody] UpdateLessonDto dto)
         {
-            var lesson = await _lessonRep.GetByIdAsync(id);
+            var lesson = await _lessonRep.UpdateAsync(id, dto);
             if (lesson == null) return NotFound();
-
-            lesson.Name = dto.Name;
-            lesson.Completed = dto.Completed;
-            lesson.Url = dto.Url;
-            lesson.Content = dto.Content;
-
-            var lessonUpdated = await _lessonRep.UpdateAsync(lesson);
-            return Ok(lessonUpdated.ConvertToLessonDto());
+            return Ok(lesson.ConvertToLessonDto());
         }
 
         [HttpDelete("delete/{id}")]

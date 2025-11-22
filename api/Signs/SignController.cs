@@ -1,7 +1,8 @@
 ﻿using api.Generate_Codes;
-using api.Glossaries.Dtos;
-using api.Glossaries.Repository;
 using api.Lessons.Repository;
+using api.Signs;
+using api.Signs.Dtos;
+using api.Signs.Repository;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,29 +10,29 @@ namespace api.Glossaries
 {
     [ApiController]
     [Route("CASNatal/glossaries")]
-    public class GlossaryController : ControllerBase
+    public class SignController : ControllerBase
     {
-        private readonly IGlossaryRepository _glossaryRep;
+        private readonly ISignRepository _signRep;
         private readonly ILessonRepository _lessonRep;
-        public GlossaryController(IGlossaryRepository glossaryRep, ILessonRepository lessonRep)
+        public SignController(ISignRepository glossaryRep, ILessonRepository lessonRep)
         {
-            _glossaryRep = glossaryRep;
+            _signRep = glossaryRep;
             _lessonRep = lessonRep;
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var glossaries = await _glossaryRep.GetAllAsync();
-            var glossariesDto = glossaries.Select(g => g.ConvertToGlossaryDto());
-            if (glossariesDto == null) return NotFound();
-            return Ok(glossariesDto);
+            var signs = await _signRep.GetAllAsync();
+            var signsDto = signs.Select(g => g.ConvertToGlossaryDto());
+            if (signsDto == null) return NotFound();
+            return Ok(signsDto);
         }
 
         [HttpGet("lessons")]
         public async Task<IActionResult> GetAllWithLessons()
         {
-            var glossaries = await _glossaryRep.GetAllWithLessonsAsync();
+            var glossaries = await _signRep.GetAllWithLessonsAsync();
             var glossariesDto = glossaries.Select(g => g.ConvertToGlossaryDto());
             if (glossariesDto == null) return NotFound();
             return Ok(glossariesDto);
@@ -40,7 +41,7 @@ namespace api.Glossaries
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById([FromRoute] Guid id)
         {
-            var glossary = await _glossaryRep.GetByIdAsync(id);
+            var glossary = await _signRep.GetByIdAsync(id);
             if (glossary == null) return NotFound();
             return Ok(glossary.ConvertToGlossaryDto());
         }
@@ -48,21 +49,21 @@ namespace api.Glossaries
         [HttpGet("category/{category}")]
         public async Task<IActionResult> GetByICategory([FromRoute] GlossaryCategory category)
         {
-            var glossary = await _glossaryRep.GetByCategoryAsync(category);
+            var glossary = await _signRep.GetByCategoryAsync(category);
             if (glossary == null) return NotFound();
             return Ok(glossary.ConvertToGlossaryDto());
         }
 
         [HttpPost("create/{lessonId}")]
-        public async Task<IActionResult> NewGlossaryOneLesson([FromRoute] Guid lessonId,[FromBody] CreateGlossaryDto dto)
+        public async Task<IActionResult> NewGlossaryOneLesson([FromRoute] Guid lessonId,[FromBody] CreateSignDto dto)
         {
             var lesson = await _lessonRep.GetByIdAsync(lessonId);
             if (lesson == null) return NotFound();
 
             var glossary = dto.CreateNewGlossaryDto();
-            glossary.GlossaryCode = GenerateCodes.GenerateGlossaryCode(glossary.Id);
+            glossary.SignCode = GenerateCodes.GenerateGlossaryCode(glossary.Id);
             glossary.Lessons.Add(lesson);
-            await _glossaryRep.CreateAsync(glossary);
+            await _signRep.CreateAsync(glossary);
             return CreatedAtAction(
                 nameof(GetById),
                 new
@@ -74,16 +75,16 @@ namespace api.Glossaries
         }
 
         [HttpPost("create")]
-        public async Task<IActionResult> NewGlossaryManyLessons([FromBody] CreateGlossaryDto dto)
+        public async Task<IActionResult> NewGlossaryManyLessons([FromBody] CreateSignDto dto)
         {
             if (!ModelState.IsValid) return ValidationProblem(ModelState);
 
             var glossary = dto.CreateNewGlossaryDto();
-            glossary.GlossaryCode = GenerateCodes.GenerateGlossaryCode(glossary.Id);
+            glossary.SignCode = GenerateCodes.GenerateGlossaryCode(glossary.Id);
 
-            if (dto.LessonIds is { Count: > 0 })
+            if (dto.lessonIds is { Count: > 0 })
             {
-                var distinctIds = dto.LessonIds.Distinct().ToList();
+                var distinctIds = dto.lessonIds.Distinct().ToList();
                 var lessons = await _lessonRep.GetByIdsAsync(distinctIds);
 
                 var found = lessons.Select(l => l.Id).ToHashSet();
@@ -101,7 +102,7 @@ namespace api.Glossaries
                     glossary.Lessons.Add(lesson);
             }
 
-            await _glossaryRep.CreateAsync(glossary);
+            await _signRep.CreateAsync(glossary);
 
             return CreatedAtAction(
                 nameof(GetById),
@@ -112,25 +113,17 @@ namespace api.Glossaries
 
 
         [HttpPut("update/{id}")]
-        public async Task<IActionResult> UpdateGlossary([FromRoute] Guid id, CreateGlossaryDto dto)
+        public async Task<IActionResult> UpdateGlossary([FromRoute] Guid id, UpdateSignDto dto)
         {
-            var glossary = await _glossaryRep.GetByIdAsync(id);
-            if (glossary == null) return NotFound();
-
-            glossary.Sign = dto.Sign;
-            glossary.Description = dto.Description;
-            glossary.Url = dto.Url;
-            //glossary.Photo = dto.Photo;
-            glossary.Category = dto.Category;
-
-            var courseUpdated = await _glossaryRep.UpdateAsync(glossary);
-            return Ok(courseUpdated.ConvertToGlossaryDto());
+            var sign = await _signRep.UpdateAsync(id, dto);
+            if (sign == null) return NotFound();
+            return Ok(sign.ConvertToGlossaryDto());
         }
 
         [HttpDelete("delete/{id}")]
         public async Task<IActionResult> DeleteGlossary([FromRoute] Guid id)
         {
-            var glossary = await _glossaryRep.DeleteAsync(id);
+            var glossary = await _signRep.DeleteAsync(id);
             if (glossary == null) return NotFound();
             return NoContent();
         }

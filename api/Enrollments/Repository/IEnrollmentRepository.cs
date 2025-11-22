@@ -11,5 +11,7 @@ namespace api.Enrollments.Repository
         Task<List<Course>> GetUserEnrollment(AppUser user);
         Task<Enrollment> CreateEnrollment(Enrollment enrollment);
         Task<Enrollment> UpdateAsync(Guid id, UpdateEnrollmentDto dto);
+        Task<Enrollment?> DeleteAsync(Guid id);
+
     }
 }

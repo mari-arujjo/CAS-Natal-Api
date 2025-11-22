@@ -2,6 +2,6 @@
 {
     public class UpdateEnrollmentDto
     {
-        public EnrollmentStatus Status { get; set; }
+        public EnrollmentStatus status { get; set; }
     }
 }

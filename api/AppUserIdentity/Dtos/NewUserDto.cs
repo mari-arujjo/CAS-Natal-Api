@@ -8,6 +8,7 @@ namespace api.AppUserIdentity.Dtos
         public string username { get; set; }
         public string email { get; set; }
         public string privateRole { get; set; }
+        public DateTime createdAt { get; set; }
         public string token { get; set; }
     }
 }

@@ -12,8 +12,8 @@ using api;
 namespace api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20251026165304_LogsTable")]
-    partial class LogsTable
+    [Migration("20251122143918_RefactorCreatedUpdatedDeleted")]
+    partial class RefactorCreatedUpdatedDeleted
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,19 +25,19 @@ namespace api.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("GlossaryLesson", b =>
+            modelBuilder.Entity("LessonSign", b =>
                 {
-                    b.Property<Guid>("GlossariesId")
-                        .HasColumnType("uuid");
-
                     b.Property<Guid>("LessonsId")
                         .HasColumnType("uuid");
 
-                    b.HasKey("GlossariesId", "LessonsId");
+                    b.Property<Guid>("SignsId")
+                        .HasColumnType("uuid");
 
-                    b.HasIndex("LessonsId");
+                    b.HasKey("LessonsId", "SignsId");
 
-                    b.ToTable("LessonGlossaries", (string)null);
+                    b.HasIndex("SignsId");
+
+                    b.ToTable("LessonsSigns", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -68,13 +68,13 @@ namespace api.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "192ec995-c947-4e24-bcb6-43d778e43782",
+                            Id = "5b1c19b5-6033-4d16-ad67-3f872956c23b",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "74396915-2eab-4260-92b7-c985cf4dc7d8",
+                            Id = "29737e31-c747-4260-854c-7d4b0526ebe8",
                             Name = "Default",
                             NormalizedName = "DEFAULT"
                         });
@@ -201,6 +201,12 @@ namespace api.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("text");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("character varying(256)");
@@ -245,6 +251,9 @@ namespace api.Migrations
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("boolean");
 
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
                         .HasColumnType("character varying(256)");
@@ -271,6 +280,12 @@ namespace api.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("text");
@@ -286,6 +301,9 @@ namespace api.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
                     b.HasKey("Id");
 
                     b.ToTable("Courses");
@@ -300,6 +318,12 @@ namespace api.Migrations
                     b.Property<Guid>("CourseId")
                         .HasColumnType("uuid");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<string>("EnrollmentCode")
                         .IsRequired()
                         .HasColumnType("text");
@@ -310,7 +334,7 @@ namespace api.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime>("Timestamp")
+                    b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("UserId")
@@ -325,38 +349,6 @@ namespace api.Migrations
                         .IsUnique();
 
                     b.ToTable("Enrollments");
-                });
-
-            modelBuilder.Entity("api.Glossaries.Glossary", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<int>("Category")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("GlossaryCode")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<byte[]>("Photo")
-                        .HasColumnType("bytea");
-
-                    b.Property<string>("Sign")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Url")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Glossaries");
                 });
 
             modelBuilder.Entity("api.Lessons.Lesson", b =>
@@ -375,6 +367,12 @@ namespace api.Migrations
                     b.Property<Guid>("CourseId")
                         .HasColumnType("uuid");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<string>("LessonCode")
                         .IsRequired()
                         .HasColumnType("text");
@@ -382,6 +380,9 @@ namespace api.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Url")
                         .IsRequired()
@@ -440,17 +441,58 @@ namespace api.Migrations
                     b.ToTable("Logs");
                 });
 
-            modelBuilder.Entity("GlossaryLesson", b =>
+            modelBuilder.Entity("api.Signs.Sign", b =>
                 {
-                    b.HasOne("api.Glossaries.Glossary", null)
-                        .WithMany()
-                        .HasForeignKey("GlossariesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
 
+                    b.Property<int>("Category")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime>("DeletedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<byte[]>("Photo")
+                        .HasColumnType("bytea");
+
+                    b.Property<string>("SignCode")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Url")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Signs");
+                });
+
+            modelBuilder.Entity("LessonSign", b =>
+                {
                     b.HasOne("api.Lessons.Lesson", null)
                         .WithMany()
                         .HasForeignKey("LessonsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("api.Signs.Sign", null)
+                        .WithMany()
+                        .HasForeignKey("SignsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

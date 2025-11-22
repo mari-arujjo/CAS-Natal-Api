@@ -67,6 +67,7 @@ namespace api.AppUserIdentity
                     UserName = dto.username,
                     Email = dto.email,
                     PrivateRole = defaultRole,
+                    CreatedAt = DateTime.UtcNow,
                 };
 
                 var createdUser = await _userManager.CreateAsync(appUser, dto.password);
@@ -82,7 +83,8 @@ namespace api.AppUserIdentity
                                 username = appUser.UserName,
                                 email = appUser.Email,
                                 privateRole = appUser.PrivateRole,
-                                token = _tokenService.CreateToken(appUser)
+                                token = _tokenService.CreateToken(appUser),
+                                createdAt = appUser.CreatedAt,
                             }
                         );
                     }
@@ -119,6 +121,9 @@ namespace api.AppUserIdentity
                     UserName = dto.username,
                     Email = dto.email,
                     PrivateRole = defaultRole,
+                    CreatedAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow,
+                    DeletedAt = null
                 };
 
                 var createdUser = await _userManager.CreateAsync(appUser, dto.password);
@@ -134,7 +139,8 @@ namespace api.AppUserIdentity
                                 username = appUser.UserName,
                                 email = appUser.Email,
                                 privateRole = appUser.PrivateRole,
-                                token = _tokenService.CreateToken(appUser)
+                                token = _tokenService.CreateToken(appUser),
+                                createdAt = appUser.CreatedAt,
                             }
                         );
                     }
