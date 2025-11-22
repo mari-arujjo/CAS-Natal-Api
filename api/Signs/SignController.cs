@@ -1,12 +1,12 @@
 ﻿using api.Generate_Codes;
+using api.Glossaries;
 using api.Lessons.Repository;
-using api.Signs;
 using api.Signs.Dtos;
 using api.Signs.Repository;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
-namespace api.Glossaries
+namespace api.Signs
 {
     [ApiController]
     [Route("CASNatal/glossaries")]
