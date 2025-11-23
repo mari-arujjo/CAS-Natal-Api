@@ -61,7 +61,7 @@ namespace api.Courses.Repository
             course.Symbol = dto.symbol;
             course.Description = dto.description;
             course.UpdatedAt = DateTime.UtcNow;
-            //course.Photo = dto.Photo;
+            course.Photo = dto.photo;
             await _context.SaveChangesAsync();
             return course;
         }

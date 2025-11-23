@@ -7,7 +7,7 @@ namespace api.Glossaries
     public static class SignMapper
     {
 
-        public static SignDto ConvertToGlossaryDto(this Sign s)
+        public static SignDto ConvertToSignDto(this Sign s)
         {
             return new SignDto
             {
@@ -22,7 +22,7 @@ namespace api.Glossaries
             };
         }
 
-        public static SignDtoSimple ConvertToGlossaryDtoSimple(this Sign s)
+        public static SignDtoSimple ConvertToSignDtoSimple(this Sign s)
         {
             return new SignDtoSimple
             {
@@ -32,7 +32,7 @@ namespace api.Glossaries
             };
         }
 
-        public static Sign CreateNewGlossaryDto(this CreateSignDto dto)
+        public static Sign CreateNewSignDto(this CreateSignDto dto)
         {
             return new Sign
             {

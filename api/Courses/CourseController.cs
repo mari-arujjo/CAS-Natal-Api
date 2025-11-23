@@ -74,9 +74,11 @@ namespace api.Courses
         }
             
 
-        [HttpPut("update/{id}")]
-        public async Task<IActionResult> UpdatePutCourse([FromRoute] Guid id, [FromBody] UpdateCourseDto dto)
+        [HttpPatch("update/{id}")]
+        public async Task<IActionResult> PatchCourse([FromRoute] Guid id, [FromBody] UpdateCourseDto dto)
         {
+            if (!ModelState.IsValid) return ValidationProblem(ModelState);
+
             var course = await _courseRep.UpdateAsync(id, dto);
             if (course == null) return NotFound();
             return Ok(course.ConvertToCourseDto());

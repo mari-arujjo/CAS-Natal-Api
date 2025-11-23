@@ -38,10 +38,20 @@ namespace api.AppUserIdentity
 
             var user = await _userManager.Users.FirstOrDefaultAsync(x => x.UserName == dto.username.ToLower());
             if (user == null) return Unauthorized("Username ou senha inválidos.");
-            if (user.Active == false) return Unauthorized("");
+
+            if (user.DeletedAt != null) return Unauthorized();
 
             var result = await _signInManager.CheckPasswordSignInAsync(user, dto.password, false);
             if(!result.Succeeded) return Unauthorized("Username ou senha inválidos.");
+
+            if (user.Active == false)
+            {
+                user.Active = true;
+                user.UpdatedAt = DateTime.UtcNow;
+                var updateResult = await _userManager.UpdateAsync(user);
+                if (!updateResult.Succeeded) return StatusCode(500, "Erro ao reativar a conta. Tente novamente.");
+            }
+
             return Ok(
                 new NewUserDto
                 {
@@ -49,7 +59,10 @@ namespace api.AppUserIdentity
                     username = user.UserName,
                     email = user.Email,
                     privateRole = user.PrivateRole,
-                    token = _tokenService.CreateToken(user)
+                    avatar = user.Avatar,
+                    createdAt = user.CreatedAt,
+                    active = user.Active,
+                    token = _tokenService.CreateToken(user),
                 }
             );
         }
@@ -166,44 +179,6 @@ namespace api.AppUserIdentity
             }
         }
 
-        
-        [Authorize]
-        [HttpPut("update")]
-        public async Task<IActionResult> UpdateUser([FromBody] UpdateUserDto dto)
-        {
-            var username = User.Identity?.Name;
-            if (string.IsNullOrEmpty(username)) return Unauthorized();
-
-            var user = await _userManager.FindByNameAsync(username);
-            if (user == null) return NotFound("Usuário não encontrado.");
-            if (user.Active == false) return Unauthorized();
-
-            user.FullName = dto.name;
-            user.UserName = dto.username;
-            user.Email = dto.email;
-            user.UpdatedAt = DateTime.UtcNow;
-            user.Active = dto.active;
-
-            var updateResult = await _userManager.UpdateAsync(user);
-            if (!updateResult.Succeeded)
-            {
-                return StatusCode(500, updateResult.Errors);
-            }
-
-            var newToken = _tokenService.CreateToken(user);
-
-            return Ok(
-                new NewUserDto
-                {
-                    name = user.FullName,
-                    username = user.UserName,
-                    email = user.Email,
-                    privateRole = user.PrivateRole,
-                    token = newToken,
-                }
-            );
-        }
-
 
         [Authorize]
         [HttpDelete("delete")]
@@ -228,5 +203,111 @@ namespace api.AppUserIdentity
             return NoContent();
         }
 
+
+        [Authorize]
+        [HttpPatch("update")]
+        public async Task<IActionResult> PatchUser([FromBody] UpdateUserDto dto)
+        {
+            var username = User.Identity?.Name;
+            if (string.IsNullOrEmpty(username)) return Unauthorized();
+
+            var user = await _userManager.FindByNameAsync(username);
+            if (user == null) return NotFound("Usuário não encontrado.");
+            if (user.DeletedAt != null) return Unauthorized();
+
+            if (!string.IsNullOrEmpty(dto.name)) user.FullName = dto.name;
+            if (!string.IsNullOrEmpty(dto.username)) user.UserName = dto.username;
+            if (!string.IsNullOrEmpty(dto.email)) user.Email = dto.email;
+            if (dto.active.HasValue) user.Active = dto.active.Value;
+            user.UpdatedAt = DateTime.UtcNow;
+
+            var updateResult = await _userManager.UpdateAsync(user);
+            if (!updateResult.Succeeded)
+            {
+                return StatusCode(500, updateResult.Errors);
+            }
+
+            var newToken = _tokenService.CreateToken(user);
+
+            return Ok(
+                new NewUserDto
+                {
+                    name = user.FullName,
+                    username = user.UserName,
+                    email = user.Email,
+                    privateRole = user.PrivateRole,
+                    avatar = user.Avatar,
+                    createdAt = user.CreatedAt,
+                    active = user.Active,
+                    token = newToken,
+                }
+            );
+        }
+
+        [Authorize]
+        [HttpPatch("updateAvatar")]
+        public async Task<IActionResult> PatchUserAvatar([FromBody] UpdateAvatarDto dto)
+        {
+            var username = User.Identity?.Name;
+            if (string.IsNullOrEmpty(username)) return Unauthorized();
+
+            var user = await _userManager.FindByNameAsync(username);
+            if (user == null) return NotFound("Usuário não encontrado.");
+            if (user.DeletedAt != null) return Unauthorized();
+
+            if (dto.avatar != null)
+            {
+                user.Avatar = dto.avatar;
+            }
+            else if (dto.avatar == null)
+            {
+                user.Avatar = null;
+            }
+            user.UpdatedAt = DateTime.UtcNow;
+
+            var updateResult = await _userManager.UpdateAsync(user);
+            if (!updateResult.Succeeded)
+            {
+                return StatusCode(500, updateResult.Errors);
+            }
+
+            var newToken = _tokenService.CreateToken(user);
+
+            return Ok(
+                new
+                {
+                    token = newToken,
+                    avatar = user.Avatar
+                }
+            );
+        }
+
+        [Authorize]
+        [HttpPatch("updatePassword")]
+        public async Task<IActionResult> PatchUserPassword([FromBody] UpdatePasswordDto dto)
+        {
+            var username = User.Identity?.Name;
+            if (string.IsNullOrEmpty(username)) return Unauthorized();
+
+            var user = await _userManager.FindByNameAsync(username);
+            if (user == null) return NotFound("Usuário não encontrado.");
+            if (user.DeletedAt != null) return Unauthorized();
+
+            if (string.IsNullOrEmpty(dto.currentPassword) || string.IsNullOrEmpty(dto.newPassword))
+            {
+                return BadRequest("Preencha os campos obrigatórios.");
+            }
+
+            var result = await _userManager.ChangePasswordAsync(user, dto.currentPassword, dto.newPassword);
+
+            if (result.Succeeded)
+            {
+                user.UpdatedAt = DateTime.UtcNow;
+                await _userManager.UpdateAsync(user);
+                return Ok("Senha atualizada com sucesso.");
+            }
+
+            return BadRequest("Falha ao alterar a senha.");
+        }
     }
 }

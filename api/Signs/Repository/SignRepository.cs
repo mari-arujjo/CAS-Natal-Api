@@ -70,6 +70,7 @@ namespace api.Signs.Repository
             sign.Name = dto.name;
             sign.Description = dto.description;
             sign.Url = dto.url;
+            sign.Photo = dto.photo;
             sign.UpdatedAt = DateTime.UtcNow;
             await _context.SaveChangesAsync();
             return sign;

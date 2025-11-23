@@ -14,6 +14,7 @@ namespace api.AppUserIdentity
                 username = u.UserName,
                 email = u.Email,
                 privateRole = u.PrivateRole,
+                avatar = u.Avatar,
                 createdAt = u.CreatedAt,
             };
         }

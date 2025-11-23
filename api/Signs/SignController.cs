@@ -24,7 +24,7 @@ namespace api.Signs
         public async Task<IActionResult> GetAll()
         {
             var signs = await _signRep.GetAllAsync();
-            var signsDto = signs.Select(g => g.ConvertToGlossaryDto());
+            var signsDto = signs.Select(g => g.ConvertToSignDto());
             if (signsDto == null) return NotFound();
             return Ok(signsDto);
         }
@@ -33,7 +33,7 @@ namespace api.Signs
         public async Task<IActionResult> GetAllWithLessons()
         {
             var glossaries = await _signRep.GetAllWithLessonsAsync();
-            var glossariesDto = glossaries.Select(g => g.ConvertToGlossaryDto());
+            var glossariesDto = glossaries.Select(g => g.ConvertToSignDto());
             if (glossariesDto == null) return NotFound();
             return Ok(glossariesDto);
         }
@@ -43,7 +43,7 @@ namespace api.Signs
         {
             var glossary = await _signRep.GetByIdAsync(id);
             if (glossary == null) return NotFound();
-            return Ok(glossary.ConvertToGlossaryDto());
+            return Ok(glossary.ConvertToSignDto());
         }
 
         [HttpGet("category/{category}")]
@@ -51,16 +51,16 @@ namespace api.Signs
         {
             var glossary = await _signRep.GetByCategoryAsync(category);
             if (glossary == null) return NotFound();
-            return Ok(glossary.ConvertToGlossaryDto());
+            return Ok(glossary.ConvertToSignDto());
         }
 
         [HttpPost("create/{lessonId}")]
-        public async Task<IActionResult> NewGlossaryOneLesson([FromRoute] Guid lessonId,[FromBody] CreateSignDto dto)
+        public async Task<IActionResult> NewSignOneLesson([FromRoute] Guid lessonId,[FromBody] CreateSignDto dto)
         {
             var lesson = await _lessonRep.GetByIdAsync(lessonId);
             if (lesson == null) return NotFound();
 
-            var glossary = dto.CreateNewGlossaryDto();
+            var glossary = dto.CreateNewSignDto();
             glossary.SignCode = GenerateCodes.GenerateGlossaryCode(glossary.Id);
             glossary.Lessons.Add(lesson);
             await _signRep.CreateAsync(glossary);
@@ -70,16 +70,16 @@ namespace api.Signs
                 {
                     id = glossary.Id,
                 },
-                glossary.ConvertToGlossaryDto()
+                glossary.ConvertToSignDto()
             );
         }
 
         [HttpPost("create")]
-        public async Task<IActionResult> NewGlossaryManyLessons([FromBody] CreateSignDto dto)
+        public async Task<IActionResult> NewSignManyLessons([FromBody] CreateSignDto dto)
         {
             if (!ModelState.IsValid) return ValidationProblem(ModelState);
 
-            var glossary = dto.CreateNewGlossaryDto();
+            var glossary = dto.CreateNewSignDto();
             glossary.SignCode = GenerateCodes.GenerateGlossaryCode(glossary.Id);
 
             if (dto.lessonIds is { Count: > 0 })
@@ -107,21 +107,23 @@ namespace api.Signs
             return CreatedAtAction(
                 nameof(GetById),
                 new { id = glossary.Id },
-                glossary.ConvertToGlossaryDto()
+                glossary.ConvertToSignDto()
             );
         }
 
 
-        [HttpPut("update/{id}")]
-        public async Task<IActionResult> UpdateGlossary([FromRoute] Guid id, UpdateSignDto dto)
+        [HttpPatch("update/{id}")]
+        public async Task<IActionResult> PatchSign([FromRoute] Guid id, UpdateSignDto dto)
         {
+            if (!ModelState.IsValid) return ValidationProblem(ModelState);
+            
             var sign = await _signRep.UpdateAsync(id, dto);
             if (sign == null) return NotFound();
-            return Ok(sign.ConvertToGlossaryDto());
+            return Ok(sign.ConvertToSignDto());
         }
 
         [HttpDelete("delete/{id}")]
-        public async Task<IActionResult> DeleteGlossary([FromRoute] Guid id)
+        public async Task<IActionResult> DeleteSign([FromRoute] Guid id)
         {
             var glossary = await _signRep.DeleteAsync(id);
             if (glossary == null) return NotFound();

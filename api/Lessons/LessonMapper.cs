@@ -16,7 +16,7 @@ namespace api.Lessons
                 url = l.Url,
                 content = l.Content,
                 courseId = l.CourseId,
-                signs = l.Signs.Select(g => g.ConvertToGlossaryDtoSimple()).ToList(),
+                signs = l.Signs.Select(g => g.ConvertToSignDtoSimple()).ToList(),
             };
         }
 
