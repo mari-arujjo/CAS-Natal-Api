@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 
 namespace api.AppUserIdentity
@@ -29,6 +30,20 @@ namespace api.AppUserIdentity
             var usersDto = users.Select(u => u.ConvertToUserDto());
             if (usersDto == null) return NotFound();
             return Ok(usersDto);
+        }
+
+        [HttpGet("avatar")]
+        public async Task<IActionResult> GetAvatar()
+        {
+            var username = User.Identity?.Name;
+            if (string.IsNullOrEmpty(username)) return Unauthorized();
+
+            var user = await _userManager.FindByNameAsync(username);
+            if (user == null) return NotFound("Usuário não encontrado.");
+
+
+            string avatarBase64 = Convert.ToBase64String(user.Avatar);
+            return Ok(avatarBase64);
         }
 
         [HttpPost("login")]

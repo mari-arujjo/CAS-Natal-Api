@@ -19,17 +19,12 @@ namespace api.Services.Token
 
         public string CreateToken(AppUser user)
         {
-            string avatarBase64 = user.Avatar != null && user.Avatar.Length > 0 
-                ? Convert.ToBase64String(user.Avatar)
-                : string.Empty;
-
             var claims = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.Email, user.Email),
                 new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName),
                 new Claim(JwtRegisteredClaimNames.Name, user.FullName),
                 new Claim("privateRole", user.PrivateRole ?? "Default"),
-                new Claim("avatar", avatarBase64),
                 new Claim("active", user.Active.ToString()),
             };
 
