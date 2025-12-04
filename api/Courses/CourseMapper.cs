@@ -31,7 +31,8 @@ namespace api.Courses
             {
                 Name = c.name,
                 Symbol = c.symbol,
-                Description = c.description
+                Description = c.description,
+                Photo = c.photo
             };
         }
     }

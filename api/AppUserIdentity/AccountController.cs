@@ -23,6 +23,8 @@ namespace api.AppUserIdentity
             _signInManager = signInManager;
         }
 
+
+        [Authorize]
         [HttpGet("users")]
         public async Task<IActionResult> GetAll()
         {
@@ -32,6 +34,7 @@ namespace api.AppUserIdentity
             return Ok(usersDto);
         }
 
+        [Authorize]
         [HttpGet("avatar")]
         public async Task<IActionResult> GetAvatar()
         {
@@ -81,7 +84,6 @@ namespace api.AppUserIdentity
                 }
             );
         }
-
 
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterUserDto dto)
@@ -136,7 +138,6 @@ namespace api.AppUserIdentity
                 return BadRequest(e.Message);
             }
         }
-
 
         [Authorize]
         [HttpPost("registerAdmin")]
@@ -194,7 +195,6 @@ namespace api.AppUserIdentity
             }
         }
 
-
         [Authorize]
         [HttpDelete("delete")]
         public async Task<IActionResult> DeleteUser()
@@ -217,7 +217,6 @@ namespace api.AppUserIdentity
 
             return NoContent();
         }
-
 
         [Authorize]
         [HttpPatch("update")]

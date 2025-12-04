@@ -39,7 +39,8 @@ namespace api.Glossaries
                 Name = dto.name,
                 Description = dto.description,
                 Url = dto.url,
-                Category = dto.category
+                Category = dto.category,
+                Photo = dto.photo
             };
         }
     }
