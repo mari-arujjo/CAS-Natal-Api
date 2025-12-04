@@ -1,10 +1,10 @@
 ﻿using api.AppUserIdentity;
-using api.Claims;
 using api.Courses.Dtos;
 using api.Courses.Repository;
 using api.Enrollments.Dtos;
 using api.Enrollments.Repository;
 using api.Generate_Codes;
+using api.Services.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

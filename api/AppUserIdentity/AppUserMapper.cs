@@ -16,6 +16,7 @@ namespace api.AppUserIdentity
                 privateRole = u.PrivateRole,
                 avatar = u.Avatar,
                 createdAt = u.CreatedAt,
+                active = u.Active
             };
         }
     }

@@ -5,7 +5,7 @@ using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
 
 
-namespace api.Service
+namespace api.Services.Token
 {
     public class TokenService : ITokenService
     {
@@ -19,13 +19,18 @@ namespace api.Service
 
         public string CreateToken(AppUser user)
         {
+            string avatarBase64 = user.Avatar != null && user.Avatar.Length > 0 
+                ? Convert.ToBase64String(user.Avatar)
+                : string.Empty;
+
             var claims = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.Email, user.Email),
                 new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName),
                 new Claim(JwtRegisteredClaimNames.Name, user.FullName),
-                new Claim("privateRole", user.PrivateRole ?? "Default")
-
+                new Claim("privateRole", user.PrivateRole ?? "Default"),
+                new Claim("avatar", avatarBase64),
+                new Claim("active", user.Active.ToString()),
             };
 
             var creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha512Signature);

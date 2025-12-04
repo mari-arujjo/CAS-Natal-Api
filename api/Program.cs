@@ -3,7 +3,7 @@ using api.AppUserIdentity;
 using api.Courses.Repository;
 using api.Enrollments.Repository;
 using api.Lessons.Repository;
-using api.Service;
+using api.Services.Token;
 using api.Signs.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;

@@ -1,5 +1,5 @@
 ﻿using api.AppUserIdentity.Dtos;
-using api.Service;
+using api.Services.Token;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
