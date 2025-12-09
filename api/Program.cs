@@ -102,21 +102,34 @@ builder.Services.AddSwaggerGen(option =>
     });
 });
 
-//CONFIGURA O CORS
+// CONFIGURA O CORS
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(name: "CASNatalCorsPolicy",
         builder => {
-            builder.WithOrigins(
-                "https://cas-natal-app-admin.vercel.app",
-                "https://cas-natal-app.vercel.app",
-                "http://localhost:*"
-            )
-            .SetIsOriginAllowedToAllowWildcardSubdomains()
+            builder.SetIsOriginAllowed(origin =>
+            {
+                var allowedList = new List<string>
+                {
+                    "https://cas-natal-app-admin.vercel.app",
+                    "https://cas-natal-app.vercel.app"
+                };
+
+                if (allowedList.Contains(origin)) return true;
+               
+                if (origin.StartsWith("http://localhost") || origin.StartsWith("https://localhost"))
+                {
+                    var uri = new Uri(origin);
+                    return uri.Host == "localhost";
+                }
+                return false;
+
+            })
             .AllowAnyHeader()
             .AllowAnyMethod()
             .AllowCredentials();
-        });
+        }
+    );
 });
 
 
