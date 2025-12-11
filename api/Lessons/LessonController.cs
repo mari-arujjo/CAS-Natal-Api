@@ -68,16 +68,18 @@ namespace api.Lessons
             );
         }
 
-        [HttpPut("update/{id}")]
+        [HttpPatch("update/{id}")]
         public async Task<IActionResult> UpdatePutLesson([FromRoute] Guid id, [FromBody] UpdateLessonDto dto)
         {
+            if (!ModelState.IsValid) return ValidationProblem(ModelState);
+
             var lesson = await _lessonRep.UpdateAsync(id, dto);
             if (lesson == null) return NotFound();
             return Ok(lesson.ConvertToLessonDto());
         }
 
         [HttpDelete("delete/{id}")]
-        public async Task<IActionResult> UpdatePutLesson([FromRoute] Guid id)
+        public async Task<IActionResult> DeleteLesson([FromRoute] Guid id)
         {
             var lesson = await _lessonRep.DeleteAsync(id);
             if (lesson == null) return NotFound();
