@@ -21,6 +21,11 @@ namespace api.QuizQuestions.Repository
             return await _context.QuizQuestions.Include(q => q.QuizOptions).FirstOrDefaultAsync(q => q.Id == id);
         }
 
+        public async Task<QuizQuestionsModel?> GetByLessonIdWithQuizOptionsAsync(Guid lessonId)
+        {
+            return await _context.QuizQuestions.Include(q => q.QuizOptions).FirstOrDefaultAsync(q => q.LessonId == lessonId);
+        }
+
         public Task<QuizQuestionsModel> CreateAsync(QuizQuestionsModel entity) { throw new NotImplementedException(); }
         public Task<QuizQuestionsModel?> DeleteAsync(Guid id) { throw new NotImplementedException(); }
         public Task<bool> ExistsAsync(Guid id) { throw new NotImplementedException(); }

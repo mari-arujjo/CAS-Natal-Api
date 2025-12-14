@@ -4,5 +4,6 @@
     {
         Task<List<QuizQuestionsModel>> GetAllWithQuizOptionsAsync();
         Task<QuizQuestionsModel?> GetByIdWithQuizOptionsAsync(Guid id);
+        Task<QuizQuestionsModel?> GetByLessonIdWithQuizOptionsAsync(Guid lessonId);
     }
 }
