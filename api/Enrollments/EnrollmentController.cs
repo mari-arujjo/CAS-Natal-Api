@@ -74,9 +74,11 @@ namespace api.Enrollments
         }
 
 
-        [HttpPut("update/{id}")]
+        [HttpPatch("update/{id}")]
         public async Task<IActionResult> UpdateEnrollment([FromRoute] Guid id, [FromBody] UpdateEnrollmentDto dto)
         {
+            if (!ModelState.IsValid) return ValidationProblem(ModelState);
+
             var enrollment = await _enrollmentRep.UpdateAsync(id, dto);
             if (enrollment == null) return NotFound();
             return Ok(enrollment.ConvertToEnrollmentDto());
