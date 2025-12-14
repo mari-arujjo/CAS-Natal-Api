@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using api;
@@ -11,9 +12,11 @@ using api;
 namespace api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251214165306_CreateQuizTable")]
+    partial class CreateQuizTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -65,13 +68,13 @@ namespace api.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "937cc5fc-b907-4d1f-bd4f-d9dd21d8ff08",
+                            Id = "dfbd5c80-4f13-4744-ae1d-8d028e4ae086",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "acd97763-cf0d-4593-984f-a7891d5fc0af",
+                            Id = "73a22cbf-da61-45fc-93a0-e773f63886be",
                             Name = "Default",
                             NormalizedName = "DEFAULT"
                         });
@@ -401,12 +404,6 @@ namespace api.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("timestamp with time zone");
-
                     b.Property<bool>("IsCorrect")
                         .HasColumnType("boolean");
 
@@ -417,12 +414,7 @@ namespace api.Migrations
                     b.Property<Guid>("QuestionId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("QuestionId");
 
                     b.ToTable("QuizOptions");
                 });
@@ -432,12 +424,6 @@ namespace api.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Feedback")
                         .IsRequired()
@@ -450,12 +436,7 @@ namespace api.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("LessonId");
 
                     b.ToTable("QuizQuestions");
                 });
@@ -597,28 +578,6 @@ namespace api.Migrations
                     b.Navigation("Course");
                 });
 
-            modelBuilder.Entity("api.QuizOptions.QuizOptionsModel", b =>
-                {
-                    b.HasOne("api.QuizQuestions.QuizQuestionsModel", "QuizQuestion")
-                        .WithMany("QuizOptions")
-                        .HasForeignKey("QuestionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("QuizQuestion");
-                });
-
-            modelBuilder.Entity("api.QuizQuestions.QuizQuestionsModel", b =>
-                {
-                    b.HasOne("api.Lessons.Lesson", "Lesson")
-                        .WithMany("QuizQuestions")
-                        .HasForeignKey("LessonId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Lesson");
-                });
-
             modelBuilder.Entity("api.AppUserIdentity.AppUser", b =>
                 {
                     b.Navigation("Enrollments");
@@ -629,16 +588,6 @@ namespace api.Migrations
                     b.Navigation("Enrollments");
 
                     b.Navigation("Lessons");
-                });
-
-            modelBuilder.Entity("api.Lessons.Lesson", b =>
-                {
-                    b.Navigation("QuizQuestions");
-                });
-
-            modelBuilder.Entity("api.QuizQuestions.QuizQuestionsModel", b =>
-                {
-                    b.Navigation("QuizOptions");
                 });
 #pragma warning restore 612, 618
         }

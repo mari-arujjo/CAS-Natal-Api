@@ -3,6 +3,7 @@ using api.AppUserIdentity;
 using api.Courses.Repository;
 using api.Enrollments.Repository;
 using api.Lessons.Repository;
+using api.QuizQuestions.Repository;
 using api.Services.Token;
 using api.Signs.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -22,6 +23,7 @@ builder.Services.AddScoped<IEnrollmentRepository, EnrollmentRepository>();
 builder.Services.AddScoped<ICourseRepository, CourseRepository>();
 builder.Services.AddScoped<ILessonRepository, LessonRepository>();
 builder.Services.AddScoped<ISignRepository, SignRepository>();
+builder.Services.AddScoped<IQuizQuestionsRepository, QuizQuestionsRepository>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

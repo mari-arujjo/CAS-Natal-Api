@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using api;
@@ -11,9 +12,11 @@ using api;
 namespace api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251214170601_AdicionarRelacaoLessonQuizQuestions")]
+    partial class AdicionarRelacaoLessonQuizQuestions
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -65,13 +68,13 @@ namespace api.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "937cc5fc-b907-4d1f-bd4f-d9dd21d8ff08",
+                            Id = "21d3b5a6-58aa-4341-afb2-111f5856b03c",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "acd97763-cf0d-4593-984f-a7891d5fc0af",
+                            Id = "a70cbba4-15cd-4b1e-ab52-a05b962b6ae3",
                             Name = "Default",
                             NormalizedName = "DEFAULT"
                         });
@@ -401,12 +404,6 @@ namespace api.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("timestamp with time zone");
-
                     b.Property<bool>("IsCorrect")
                         .HasColumnType("boolean");
 
@@ -416,9 +413,6 @@ namespace api.Migrations
 
                     b.Property<Guid>("QuestionId")
                         .HasColumnType("uuid");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
@@ -433,12 +427,6 @@ namespace api.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("timestamp with time zone");
-
                     b.Property<string>("Feedback")
                         .IsRequired()
                         .HasColumnType("text");
@@ -449,9 +437,6 @@ namespace api.Migrations
                     b.Property<string>("QuestionText")
                         .IsRequired()
                         .HasColumnType("text");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 

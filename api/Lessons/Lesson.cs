@@ -1,4 +1,5 @@
 ﻿using api.Courses;
+using api.QuizQuestions;
 using api.Signs;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -24,6 +25,7 @@ namespace api.Lessons
         public DateTime? DeletedAt { get; set; }
 
         public List<Sign> Signs { get; set; } = new List<Sign>();
+        public ICollection<QuizQuestionsModel> QuizQuestions { get; set; }
 
         public Guid CourseId { get; set; }
         public Course Course { get; set; }
