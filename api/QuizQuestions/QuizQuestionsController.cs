@@ -32,9 +32,9 @@ namespace api.QuizQuestions
         }
 
         [HttpGet("byLessonId/{id}")]
-        public async Task<IActionResult> GetByLessonIdWithQuizOptions([FromRoute] Guid lessonId)
+        public async Task<IActionResult> GetByLessonIdWithQuizOptions([FromRoute] Guid id)
         {
-            var question = await _quizRep.GetByLessonIdWithQuizOptionsAsync(lessonId);
+            var question = await _quizRep.GetByLessonIdWithQuizOptionsAsync(id);
             if (question == null) return NotFound();
             return Ok(question.ConvertToQuizQuestionsDto());
         }
