@@ -14,26 +14,20 @@ namespace api.QuizQuestions
             _quizRep = quizRep;
         }
 
-        [HttpGet("quiz")]
+        [HttpGet]
         public async Task<IActionResult> GetAllWithQuizOptions()
         {
             var questions = await _quizRep.GetAllWithQuizOptionsAsync();
-
-            // Usando o método de extensão para mapear
             var questionsDto = questions.Select(q => q.ConvertToQuizQuestionsDto());
-
             if (questionsDto == null || !questionsDto.Any()) return NotFound();
-
             return Ok(questionsDto);
         }
 
-        [HttpGet("quiz/{id}")]
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetByIdWithQuizOptions([FromRoute] Guid id)
         {
             var question = await _quizRep.GetByIdWithQuizOptionsAsync(id);
-
             if (question == null) return NotFound();
-
             return Ok(question.ConvertToQuizQuestionsDto());
         }
     }
