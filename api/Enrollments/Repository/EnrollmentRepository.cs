@@ -38,18 +38,20 @@ namespace api.Enrollments.Repository
             return _context.Enrollments.ToListAsync();
         }
 
-        public async Task<List<Course>> GetUserEnrollment(AppUser user)
+        public async Task<List<CourseEnrollmentDto>> GetCourseUserEnrollment(AppUser user)
         {
-            return await _context.Enrollments.Where(u => u.UserId == user.Id)
-            .Select(course => new Course
+            return await _context.Enrollments
+            .Where(u => u.UserId == user.Id)
+            .Select(enrollment => new CourseEnrollmentDto
             {
-                Id = course.Course.Id,
-                CourseCode = course.Course.CourseCode,
-                Name = course.Course.Name,
-                Symbol = course.Course.Symbol,
-                Description = course.Course.Description,
-                Photo = course.Course.Photo,
-                Lessons = course.Course.Lessons,
+                enrollmentId = enrollment.Id,
+                courseId = enrollment.Course.Id,
+                courseCode = enrollment.Course.CourseCode,
+                name = enrollment.Course.Name,
+                symbol = enrollment.Course.Symbol,
+                description = enrollment.Course.Description,
+                photo = enrollment.Course.Photo,
+                //lessons = enrollment.Course.Lessons,
             }).ToListAsync();
         }
 

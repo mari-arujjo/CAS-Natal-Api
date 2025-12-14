@@ -33,9 +33,9 @@ namespace api.Enrollments
             return Ok(enrollment);
         }
 
-        [HttpGet("getUserEnrollment")]
+        [HttpGet("getCourseUserEnrollment")]
         [Authorize]
-        public async Task<IActionResult> GetUserEnrollment()
+        public async Task<IActionResult> GetCourseUserEnrollment()
         {
             var username = User.GetUsername();
             if (string.IsNullOrEmpty(username)) return BadRequest("Token inválido ou username não encontrado no token.");
@@ -43,7 +43,7 @@ namespace api.Enrollments
             var appUser = await _userMan.FindByNameAsync(username);
             if (appUser == null) return BadRequest("Usuário não existe");
 
-            var userEnrollment = await _enrollmentRep.GetUserEnrollment(appUser);
+            var userEnrollment = await _enrollmentRep.GetCourseUserEnrollment(appUser);
             return Ok(userEnrollment);
         }
 
@@ -56,8 +56,8 @@ namespace api.Enrollments
             var course = await _courseRep.GetBySymbol(symbol);
             if (course == null) return BadRequest("Curso não encontrado.");
 
-            var userEnrollment = await _enrollmentRep.GetUserEnrollment(appUser);
-            if (userEnrollment.Any(e => e.Symbol.ToLower() == symbol.ToLower())) return BadRequest("O usuário já está matriculado neste curso.");
+            var userEnrollment = await _enrollmentRep.GetCourseUserEnrollment(appUser);
+            if (userEnrollment.Any(e => e.symbol.ToLower() == symbol.ToLower())) return BadRequest("O usuário já está matriculado neste curso.");
             var enrollment = new Enrollment();
             enrollment.CourseId = course.Id;
             enrollment.UserId = appUser.Id;

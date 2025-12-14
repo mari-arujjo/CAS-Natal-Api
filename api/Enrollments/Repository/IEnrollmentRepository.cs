@@ -8,7 +8,7 @@ namespace api.Enrollments.Repository
     public interface IEnrollmentRepository
     {
         Task<List<Enrollment>> GetEnrollment();
-        Task<List<Course>> GetUserEnrollment(AppUser user);
+        Task<List<CourseEnrollmentDto>> GetCourseUserEnrollment(AppUser user);
         Task<Enrollment> CreateEnrollment(Enrollment enrollment);
         Task<Enrollment> UpdateAsync(Guid id, UpdateEnrollmentDto dto);
         Task<Enrollment?> DeleteAsync(Guid id);
