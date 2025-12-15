@@ -8,7 +8,7 @@ namespace api.Signs.Dtos
         public string description { get; set; } = string.Empty;
         public string url { get; set; } = string.Empty;
         public byte[]? photo { get; set; }
-        public GlossaryCategory category { get; set; }
+        public SignCategory category { get; set; }
         public List<Guid>? lessonIds { get; set; }
     }
 }

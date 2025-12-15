@@ -47,7 +47,7 @@ namespace api.Signs.Repository
             return await _context.Signs.Include(l => l.Lessons).ToListAsync();
         }
 
-        public async Task<Sign?> GetByCategoryAsync(GlossaryCategory category)
+        public async Task<Sign?> GetByCategoryAsync(SignCategory category)
         {
             return await _context.Signs.FirstOrDefaultAsync(s => s.Category == category);
         }

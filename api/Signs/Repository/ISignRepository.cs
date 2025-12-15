@@ -7,7 +7,7 @@ namespace api.Signs.Repository
 {
     public interface ISignRepository : IGenericRepository<Sign, Guid>
     {
-        Task<Sign?> GetByCategoryAsync(GlossaryCategory category);
+        Task<Sign?> GetByCategoryAsync(SignCategory category);
         Task<List<Sign>> GetAllWithLessonsAsync();
         Task<Sign?> GetByIdWithLessonsAsync(Guid id);
         Task<Sign> UpdateAsync(Guid id, UpdateSignDto dto);

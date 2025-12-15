@@ -14,7 +14,7 @@ namespace api.Signs
         public string Description { get; set; } = string.Empty;
         public string? Url { get; set; } = null;
         public byte[]? Photo { get; set; } = null;
-        public GlossaryCategory Category { get; set; }
+        public SignCategory Category { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
         public DateTime? DeletedAt { get; set; }
@@ -22,7 +22,7 @@ namespace api.Signs
         public List<Lesson> Lessons { get; set; } = new List<Lesson>();
     }
 
-    public enum GlossaryCategory
+    public enum SignCategory
     {
         [Display(Name = "Emoções e Comunicação")]
         EmoçõesEComunicacao,

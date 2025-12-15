@@ -12,7 +12,7 @@ namespace api.Signs.Dtos
         public string description { get; set; } = string.Empty;
         public string? url { get; set; } = null;
         public byte[]? photo { get; set; } = null;
-        public GlossaryCategory category { get; set; }
+        public SignCategory category { get; set; }
         public ICollection<LessonDtoSimple> lessons { get; set; } = new List<LessonDtoSimple>();
     }
 }
