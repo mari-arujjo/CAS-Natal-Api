@@ -105,35 +105,18 @@ builder.Services.AddSwaggerGen(option =>
 });
 
 // CONFIGURA O CORS
+// TEMPORARIO!!!
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(name: "CASNatalCorsPolicy",
         builder => {
-            builder.SetIsOriginAllowed(origin =>
-            {
-                var allowedList = new List<string>
-                {
-                    "https://cas-natal-app-admin.vercel.app",
-                    "https://cas-natal-app.vercel.app"
-                };
-
-                if (allowedList.Contains(origin)) return true;
-               
-                if (origin.StartsWith("http://localhost") || origin.StartsWith("https://localhost"))
-                {
-                    var uri = new Uri(origin);
-                    return uri.Host == "localhost";
-                }
-                return false;
-
-            })
-            .AllowAnyHeader()
-            .AllowAnyMethod()
-            .AllowCredentials();
+            builder.SetIsOriginAllowed(origin => true)
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowCredentials();
         }
     );
 });
-
 
 var app = builder.Build();
 app.UseSwagger();
