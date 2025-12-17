@@ -113,7 +113,6 @@ builder.Services.AddCors(options =>
             {
                 var allowedList = new List<string>
                 {
-                    "https://cas-natal-app-admin.vercel.app",
                     "https://cas-natal-app.vercel.app"
                 };
 
