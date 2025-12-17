@@ -9,6 +9,6 @@ namespace api.Signs.Dtos
         public string? description { get; set; }
         public string? url { get; set; }
         public byte[]? photo { get; set; } = null;
-        public GlossaryCategory category { get; set; }
+        public SignCategory category { get; set; }
     }
 }
