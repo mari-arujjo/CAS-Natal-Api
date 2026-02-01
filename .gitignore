@@ -23,3 +23,6 @@ obj/
 # Arquivos do sistema
 Thumbs.db
 Desktop.ini
+
+# Banco de dados (Docker - Postgres)
+postgres_data/

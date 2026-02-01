@@ -134,6 +134,26 @@ builder.Services.AddCors(options =>
 });
 
 var app = builder.Build();
+
+if (app.Environment.IsDevelopment())
+{
+    using (var scope = app.Services.CreateScope())
+    {
+        var services = scope.ServiceProvider;
+        var context = services.GetRequiredService<ApplicationDbContext>();
+        try
+        {
+            Console.WriteLine($"--> Aplicando migrações...");
+            context.Database.Migrate();
+            Console.WriteLine("--> Migrações aplicadas com sucesso!");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"--> Tentativa de migração falhou: {ex.Message}");
+        }
+    }
+}
+
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
