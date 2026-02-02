@@ -12,5 +12,21 @@ services:
     volumes:
       - pg_data_cas:/var/lib/postgresql/data
 
+  api:
+      image: mcr.microsoft.com/dotnet/sdk:8.0
+      container_name: cas_api_local
+      working_dir: /app
+      volumes:
+        - .:/app
+      ports:
+        - "5214:8080"
+      environment:
+        - ASPNETCORE_ENVIRONMENT=Development
+        - ASPNETCORE_URLS=http://+:8080
+        - ConnectionStrings__DefaultConnection=Host=database;Port=5432;Database=cas_local_db;Username=local_user;Password=local_password
+      depends_on:
+        - database
+      command: dotnet watch run --no-launch-profile 
+
 volumes:
   pg_data_cas:
