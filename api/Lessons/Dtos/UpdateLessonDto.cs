@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using api.LessonTopics.Dtos;
+using System.ComponentModel;
 
 namespace api.Lessons.Dtos
 {
@@ -10,5 +11,6 @@ namespace api.Lessons.Dtos
         public bool completed { get; set; } = false;
         public string? url { get; set; }
         public string? content { get; set; }
+        public List<LessonTopicDto>? topics { get; set; }
     }
 }

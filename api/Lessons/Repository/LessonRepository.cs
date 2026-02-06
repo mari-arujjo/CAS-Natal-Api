@@ -1,5 +1,6 @@
 ﻿using api.Courses;
 using api.Lessons.Dtos;
+using api.LessonTopics;
 using Microsoft.EntityFrameworkCore;
 
 namespace api.Lessons.Repository
@@ -47,7 +48,7 @@ namespace api.Lessons.Repository
 
         public async Task<Lesson?> GetByIdAsync(Guid id)
         {
-            return await _context.Lessons.FindAsync(id);
+            return await _context.Lessons.Include(l => l.LessonTopics).Include(l => l.Signs).FirstOrDefaultAsync(l => l.Id == id);
         }
 
         public async Task<List<Lesson>> GetByIdsAsync(IEnumerable<Guid> ids)
@@ -57,14 +58,29 @@ namespace api.Lessons.Repository
 
         public async Task<Lesson> UpdateAsync(Guid id, UpdateLessonDto dto)
         {
-            var lesson = await _context.Lessons.FirstOrDefaultAsync(l => l.Id == id);
+            var lesson = await _context.Lessons
+                .Include(l => l.LessonTopics)
+                .FirstOrDefaultAsync(l => l.Id == id);
+
             if (lesson == null) return null;
 
-            lesson.Name = dto.name;
+            lesson.Name = dto.name ?? lesson.Name;
             lesson.Completed = dto.completed;
-            lesson.Url = dto.url;
-            lesson.Content = dto.content;
+            lesson.Url = dto.url ?? lesson.Url;
             lesson.UpdatedAt = DateTime.UtcNow;
+
+            if (dto.topics != null)
+            {
+                _context.LessonTopics.RemoveRange(lesson.LessonTopics);
+                lesson.LessonTopics = dto.topics.Select(t => new LessonTopic
+                {
+                    Order = t.order,
+                    Title = t.title,
+                    TextContent = t.textContent,
+                    LessonId = lesson.Id 
+                }).ToList();
+            }
+
             await _context.SaveChangesAsync();
             return lesson;
         }

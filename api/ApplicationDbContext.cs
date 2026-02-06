@@ -9,6 +9,7 @@ using api.AppUserIdentity;
 using api.Signs;
 using api.QuizQuestions;
 using api.QuizOptions;
+using api.LessonTopics;
 
 namespace api
 {
@@ -19,6 +20,7 @@ namespace api
         public DbSet<Enrollment> Enrollments { get; set; }
         public DbSet<Course> Courses { get; set; }
         public DbSet<Lesson> Lessons { get; set; }
+        public DbSet<LessonTopic> LessonTopics { get; set; }
         public DbSet<QuizQuestionsModel> QuizQuestions { get; set; }
         public DbSet<QuizOptionsModel> QuizOptions { get; set; }
         public DbSet<Sign> Signs { get; set; }

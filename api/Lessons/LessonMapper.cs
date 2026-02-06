@@ -1,5 +1,7 @@
 ﻿using api.Glossaries;
 using api.Lessons.Dtos;
+using api.LessonTopics;
+using api.LessonTopics.Dtos;
 
 namespace api.Lessons
 {
@@ -17,6 +19,12 @@ namespace api.Lessons
                 content = l.Content,
                 courseId = l.CourseId,
                 signs = l.Signs.Select(g => g.ConvertToSignDtoSimple()).ToList(),
+                topics = l.LessonTopics.OrderBy(t => t.Order).Select(t => new LessonTopicDto
+                {
+                    order = t.Order,
+                    title = t.Title,
+                    textContent = t.TextContent
+                }).ToList(),
             };
         }
 
@@ -38,7 +46,13 @@ namespace api.Lessons
                 //Completed = dto.Completed,
                 Url = dto.url,
                 Content = dto.content,
-                CourseId = courseId
+                CourseId = courseId,
+                LessonTopics = dto.topics.Select(t => new LessonTopic
+                {
+                    Order = t.order,
+                    Title = t.title,
+                    TextContent = t.textContent
+                }).ToList()
             };
         }
 

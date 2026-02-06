@@ -1,4 +1,5 @@
 ﻿using api.Courses;
+using api.LessonTopics;
 using api.QuizQuestions;
 using api.Signs;
 using System.ComponentModel;
@@ -17,9 +18,10 @@ namespace api.Lessons
         
         [DefaultValue(false)]
         public bool Completed { get; set; } = false;
-
         public string Url { get; set; } = string.Empty;
-        public string Content { get; set; } = string.Empty;
+        public string Content { get; set; } = string.Empty; 
+        public List<LessonTopic> LessonTopics { get; set; } = new List<LessonTopic>();
+
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
         public DateTime? DeletedAt { get; set; }
