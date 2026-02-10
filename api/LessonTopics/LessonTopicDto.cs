@@ -2,6 +2,7 @@
 {
     public class LessonTopicDto
     {
+        public Guid id { get; set; }
         public int order { get; set; }
         public string title { get; set; } = string.Empty;
         public string textContent { get; set; } = string.Empty;

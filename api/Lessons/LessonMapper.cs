@@ -14,6 +14,7 @@ namespace api.Lessons
                 id = l.Id,
                 lessonCode = l.LessonCode,
                 name = l.Name,
+                order = l.Order,
                 completed = l.Completed,
                 url = l.Url,
                 content = l.Content,
@@ -21,6 +22,7 @@ namespace api.Lessons
                 signs = l.Signs.Select(g => g.ConvertToSignDtoSimple()).ToList(),
                 topics = l.LessonTopics.OrderBy(t => t.Order).Select(t => new LessonTopicDto
                 {
+                    id = t.Id,
                     order = t.Order,
                     title = t.Title,
                     textContent = t.TextContent
@@ -34,7 +36,7 @@ namespace api.Lessons
             {
                 id = l.Id,
                 lessonCode = l.LessonCode,
-                name = l.Name
+                name = l.Name,order = l.Order
             };
         }
 
@@ -44,11 +46,13 @@ namespace api.Lessons
             {
                 Name = dto.name,
                 //Completed = dto.Completed,
+                Order = dto.order,
                 Url = dto.url,
                 Content = dto.content,
                 CourseId = courseId,
                 LessonTopics = dto.topics.Select(t => new LessonTopic
                 {
+                    Id = t.id,
                     Order = t.order,
                     Title = t.title,
                     TextContent = t.textContent

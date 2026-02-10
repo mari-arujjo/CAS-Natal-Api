@@ -35,6 +35,17 @@ namespace api.AppUserIdentity
         }
 
         [Authorize]
+        [HttpGet("users/{id}")]
+        public async Task<IActionResult> GetUserById([FromRoute] string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null) return NotFound("Usuário não encontrado.");
+            if (user.DeletedAt != null) return NotFound("Usuário não encontrado ou inativo.");
+            var userDto = user.ConvertToUserDto();
+            return Ok(userDto);
+        }
+
+        [Authorize]
         [HttpGet("avatar")]
         public async Task<IActionResult> GetAvatar()
         {
@@ -44,9 +55,20 @@ namespace api.AppUserIdentity
             var user = await _userManager.FindByNameAsync(username);
             if (user == null) return NotFound("Usuário não encontrado.");
 
+            if (user.Avatar == null || user.Avatar.Length == 0)
+            {
+                return Ok(null);
+            }
 
-            string avatarBase64 = Convert.ToBase64String(user.Avatar);
-            return Ok(avatarBase64);
+            try
+            {
+                string avatarBase64 = Convert.ToBase64String(user.Avatar);
+                return Ok(avatarBase64);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Erro ao processar imagem: {ex.Message}");
+            }
         }
 
         [HttpPost("login")]

@@ -6,6 +6,7 @@ namespace api.Lessons.Dtos
     public class UpdateLessonDto
     {
         public string? name { get; set; }
+        public int order { get; set; }
 
         [DefaultValue(false)]
         public bool completed { get; set; } = false;

@@ -15,7 +15,8 @@ namespace api.Lessons
         public Guid Id { get; set; } = Guid.NewGuid();
         public string LessonCode { get; set; } = string.Empty; //LS-HCN-hash do guid
         public string Name { get; set; } = string.Empty; 
-        
+        public int Order { get; set; }
+
         [DefaultValue(false)]
         public bool Completed { get; set; } = false;
         public string Url { get; set; } = string.Empty;
