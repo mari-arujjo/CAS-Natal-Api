@@ -1,4 +1,5 @@
 ﻿using api.QuizQuestions.Repository;
+using api.QuizQuestions.Dtos;
 using Microsoft.AspNetCore.Mvc;
 
 namespace api.QuizQuestions
@@ -34,9 +35,14 @@ namespace api.QuizQuestions
         [HttpGet("byLessonId/{id}")]
         public async Task<IActionResult> GetByLessonIdWithQuizOptions([FromRoute] Guid id)
         {
-            var question = await _quizRep.GetByLessonIdWithQuizOptionsAsync(id);
-            if (question == null) return NotFound();
-            return Ok(question.ConvertToQuizQuestionsDto());
+            var questions = await _quizRep.GetByLessonIdWithQuizOptionsAsync(id);
+            if (questions == null || !questions.Any())
+            {
+                return Ok(new List<QuizQuestionsDto>());
+            }
+            var questionsDto = questions.Select(q => q.ConvertToQuizQuestionsDto());
+
+            return Ok(questionsDto);
         }
     }
 }
