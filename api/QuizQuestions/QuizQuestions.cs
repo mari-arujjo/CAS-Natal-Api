@@ -13,6 +13,7 @@ namespace api.QuizQuestions
         public Guid LessonId { get; set; } = Guid.NewGuid();
         public string QuestionText { get; set; }
         public string Feedback { get; set; }
+        public int Order { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
         public DateTime? DeletedAt { get; set; }

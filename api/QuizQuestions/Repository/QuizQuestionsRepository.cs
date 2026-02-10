@@ -13,7 +13,7 @@ namespace api.QuizQuestions.Repository
 
         public async Task<List<QuizQuestionsModel>> GetAllWithQuizOptionsAsync()
         {
-            return await _context.QuizQuestions.Include(q => q.QuizOptions).ToListAsync();
+            return await _context.QuizQuestions.OrderBy(q => q.Order).Include(q => q.QuizOptions).ToListAsync();
         }
 
         public async Task<QuizQuestionsModel?> GetByIdWithQuizOptionsAsync(Guid id)
@@ -21,9 +21,13 @@ namespace api.QuizQuestions.Repository
             return await _context.QuizQuestions.Include(q => q.QuizOptions).FirstOrDefaultAsync(q => q.Id == id);
         }
 
-        public async Task<QuizQuestionsModel?> GetByLessonIdWithQuizOptionsAsync(Guid lessonId)
+        public async Task<List<QuizQuestionsModel>> GetByLessonIdWithQuizOptionsAsync(Guid lessonId)
         {
-            return await _context.QuizQuestions.Include(q => q.QuizOptions).FirstOrDefaultAsync(q => q.LessonId == lessonId);
+            return await _context.QuizQuestions
+                .Include(q => q.QuizOptions)
+                .Where(q => q.LessonId == lessonId)
+                .OrderBy(q => q.Order)
+                .ToListAsync();
         }
 
         public Task<QuizQuestionsModel> CreateAsync(QuizQuestionsModel entity) { throw new NotImplementedException(); }

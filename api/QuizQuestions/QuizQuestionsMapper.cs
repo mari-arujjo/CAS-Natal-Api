@@ -12,7 +12,7 @@ namespace api.QuizQuestions
             {
                 id = option.Id,
                 optionText = option.OptionText,
-                isCorrect = option.IsCorrect
+                isCorrect = option.IsCorrect,
             };
         }
 
@@ -24,6 +24,7 @@ namespace api.QuizQuestions
                 lessonId = question.LessonId,
                 questionText = question.QuestionText,
                 feedback = question.Feedback,
+                order = question.Order,
                 quizOptions = question.QuizOptions.Select(o => o.ConvertToQuizOptionsDto()).ToList()
             };
         }
